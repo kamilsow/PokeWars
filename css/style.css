@@ -1,3 +1,36 @@
-body {
-    background-color: burlywood;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+html, body {
+    height: 100%;
+}
+.app {
+    height: 100%;
+}
+.main-container {
+    height: 100%;
+    position: relative;
+    left: 10%;
+    background-color: gray;
+    width: 80%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.pokemon {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 400px;
+    min-height: 400px;
+    border: 2px solid black;
+    margin: 15px;
+    align-items: center;
+}
+.pick {
+    position: absolute;
+    bottom: 0;
+    width: 50%;
 }
