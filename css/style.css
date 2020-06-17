@@ -74,15 +74,9 @@ html, body {
     margin: 15px;
     align-items: center;
 }
-.pokemon-content > img{
-    width: 9vw;
-    height: 9vw;
-}
 .pick {
-    position: relative;
-    bottom: 0;
     width: 50%;
-    margin: 5px 0px;
+    margin: 10px 0px;
 }
 .vs {
     display: flex;
@@ -94,7 +88,6 @@ html, body {
     width: 20.3vw;
     height: 24vw;
     border: 3px solid black;
-    border-radius: 25px;
     -webkit-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.75);
     -moz-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.75);
     box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.75);
@@ -104,21 +97,22 @@ html, body {
     text-align: center;
     text-transform: capitalize;
     color: white;
-    border-radius: 22px 22px 0 0;
 }
 .card>img {
-    margin-left: calc(50% - 3.9vw);
-    width: 7.8vw;
-    height: 7.8vw;
+    margin-left: calc(50% - 4.5vw);
+    width: 9vw;
+    height: 9vw;
+}
+.poke-info {
+    display: flex;
 }
 .stats {
+    width: 50%;
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
     justify-content: space-evenly;
-    height: 6vw;
-    border-top: 2px solid black;
-    border-bottom: 2px solid black;
+    padding: 3px;
 }
 .stats img {
     width: 2.4vw;
@@ -135,15 +129,23 @@ html, body {
     font-size: 1.2vw;
     padding-top: 10px;
 }
-.types p{
-    font-size: 0.75em;
-    width: fit-content;
+.type {
+    border-top: 2px solid black;
+    border-bottom: 2px solid black;
+}
+.type p {
+    font-size: 1.25em;
+    text-transform: capitalize;
+    font-weight: bold;
+    color: white;
+    width: 100%;
+    text-align: center;
     margin: 0 auto 0 auto;
     padding: 0.3em 0;
 }
-.typeValues {
-    display: flex;
-    justify-content: space-evenly;
+.id {
+    text-align: center;
+    font-size: 1em;
 }
 .bug {background-color: #A8b820;}
 .bug2 {background-color: #dbeb53; border-color: #758500;}

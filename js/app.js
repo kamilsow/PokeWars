@@ -36,17 +36,16 @@ const createPokeTab = (e, pokemon) => {
         <div class="card">
             <h1>${pokemon.name}</h1>
             <img src=${pokemon.imgFront}>
-            <div class="stats">
-                <div><img src="img/sword.png"><p>${pokemon.attack} ${pokemon.attackValue}</p></div>
-                <div><img src="img/shield.png"><p>${pokemon.defense} ${pokemon.defenseValue}</p></div>
-                <div><img src="img/speed.png"><p>${pokemon.speed} ${pokemon.speedValue}</p></div>
-                <div><img src="img/heart.png"><p>${pokemon.hp} ${pokemon.hpValue}</p></div>
-            </div>
-            <div class="types">
-                <p>Type:</p>
-                <div class="typeValues">${pokemon.typesOut}</div>
-            </div>
-            <div class="id">${pokemon.id}</div>
+            <div class="type">${pokemon.typesOut}</div>
+            <div class="poke-info">
+                <div class="stats">
+                    <div><img src="img/crossed-swords.png"><p>${pokemon.attack} ${pokemon.attackValue}</p></div>
+                    <div><img src="img/checked-shield.png"><p>${pokemon.defense} ${pokemon.defenseValue}</p></div>
+                    <div><img src="img/wingfoot.png"><p>${pokemon.speed} ${pokemon.speedValue}</p></div>
+                    <div><img src="img/heart-plus.png"><p>${pokemon.hp} ${pokemon.hpValue}</p></div>
+                </div>
+                <div class="id">Pokemon id: ${pokemon.id}</div>
+            <div>
         </div>
     `
     e.target.parentElement.innerHTML += out
@@ -55,14 +54,16 @@ function createType(pokeType) {
     return `<p class="${pokeType}">${pokeType}</p>`
 }
 function checkType() {
-    var types = document.querySelectorAll('.types');
+    var types = document.querySelectorAll('.type');
     Array.from(types).forEach(type => {
-        var cardType = type.children[1].firstElementChild.textContent;
+        console.log(type.parentElement)
+        var cardType = type.firstElementChild.textContent;
         var typeArr = ['bug', 'dark', 'normal', 'fire', 'dragon', 'flying', 'electric', 'fairy', 'fighting', 'ghost', 'poison', 'grass', 'ground', 'ice', 'steel', 'psychic', 'rock', 'water'];
         for (let i = 0; i < typeArr.length; i++) {
             if (cardType == typeArr[i]) {
                 type.parentElement.firstElementChild.classList.add(typeArr[i]);
-                type.parentElement.lastElementChild.classList.add(typeArr[i]);
+                //type.parentElement.lastElementChild.classList.add(typeArr[i]);
+                type.parentElement.children[2].classList.add(typeArr[i] + '2');
                 type.parentElement.classList.add(typeArr[i] + '2');
                 break;
             }
@@ -70,8 +71,5 @@ function checkType() {
     })
 }
 Array.from(randomButtons).forEach(button => {
-    button.addEventListener('click', function(e) {
-        e.target.parentElement.innerHTML = loader;
-        randomPicker(e)
-    })
+    button.addEventListener('click', randomPicker)
 })
