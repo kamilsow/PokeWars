@@ -1,15 +1,16 @@
 const randomButtons = document.querySelectorAll('.pick')
 const loader = `<div class="loader-wrapper"><div class="loader-text">Loading...</div><span class="loader"><span class="loader-inner"></span></span></div>`;
 
-const randomPicker = (e) => {
+const randomPicker = (i) => {
     var url = "https://pokeapi.co/api/v2/pokemon/" + (Math.floor(Math.random() * 807) + 1);
     fetch(url).then(data => data.json())
         .then(jsonObject => {
             console.log(jsonObject)
             return createPokeObject(jsonObject)
         }).then(pokemon => {
-            createPokeTab(e, pokemon)
+            createPokeTab(i, pokemon)
             checkType()
+            createHpBar(pokemon, i)
         })
 }
 const createPokeObject = (jsonObject) => {
@@ -31,10 +32,12 @@ const createPokeObject = (jsonObject) => {
     }
     return pokemon
 }
-const createPokeTab = (e, pokemon) => {
-    out = `
+const createPokeTab = (i, pokemon) => {
+    console.log(i)
+    let out = `
         <div class="card">
             <h1>${pokemon.name}</h1>
+            <div class="hp-bar"></div>
             <img src=${pokemon.imgFront}>
             <div class="type">${pokemon.typesOut}</div>
             <div class="poke-info">
@@ -48,28 +51,37 @@ const createPokeTab = (e, pokemon) => {
             <div>
         </div>
     `
-    e.target.parentElement.innerHTML += out
+    document.querySelectorAll('.pokemon')[i].innerHTML = out;
 }
-function createType(pokeType) {
+const createType = (pokeType) => {
     return `<p class="${pokeType}">${pokeType}</p>`
 }
-function checkType() {
+const checkType = () => {
     var types = document.querySelectorAll('.type');
     Array.from(types).forEach(type => {
-        console.log(type.parentElement)
         var cardType = type.firstElementChild.textContent;
         var typeArr = ['bug', 'dark', 'normal', 'fire', 'dragon', 'flying', 'electric', 'fairy', 'fighting', 'ghost', 'poison', 'grass', 'ground', 'ice', 'steel', 'psychic', 'rock', 'water'];
         for (let i = 0; i < typeArr.length; i++) {
             if (cardType == typeArr[i]) {
                 type.parentElement.firstElementChild.classList.add(typeArr[i]);
                 //type.parentElement.lastElementChild.classList.add(typeArr[i]);
-                type.parentElement.children[2].classList.add(typeArr[i] + '2');
+                type.parentElement.children[3].classList.add(typeArr[i] + '2');
                 type.parentElement.classList.add(typeArr[i] + '2');
                 break;
             }
         }
     })
 }
-Array.from(randomButtons).forEach(button => {
-    button.addEventListener('click', randomPicker)
-})
+const createHpBar = (pokemon, i) => {
+    var currentHp = pokemon.hpValue;
+    let out = `
+        <div class="hp-bar">${currentHp}/${currentHp}</div>
+    `
+    document.querySelectorAll('.pokemon')[i].innerHTML += out;
+}
+for (let i = 0; i < 2; i++) {
+    document.querySelectorAll('.pick')[i].addEventListener('click', function() {
+        document.querySelectorAll('.pokemon')[i].innerHTML = loader
+        randomPicker(i)
+    })
+}
