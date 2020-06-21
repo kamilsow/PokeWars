@@ -1,3 +1,4 @@
+// CARD CREATION
 const randomButtons = document.querySelectorAll('.pick')
 const loader = `<div class="loader-wrapper"><div class="loader-text">Loading...</div><span class="loader"><span class="loader-inner"></span></span></div>`;
 
@@ -33,7 +34,6 @@ const createPokeObject = (jsonObject) => {
     return pokemon
 }
 const createPokeTab = (i, pokemon) => {
-    console.log(i)
     let out = `
         <div class="card">
             <h1>${pokemon.name}</h1>
@@ -73,9 +73,15 @@ const checkType = () => {
     })
 }
 const createHpBar = (pokemon, i) => {
-    var currentHp = pokemon.hpValue;
+    var health = pokemon.hpValue
     let out = `
-        <div class="hp-bar">${currentHp}/${currentHp}</div>
+        <div class="total">${health}/${health}</div>
+        <div class="health-box">
+            <div class="health-bar-red"></div>
+            <div class="health-bar-blue"></div>
+            <div class="health-bar"></div>
+            <div class="health-bar-text">100%</div>
+        </div>
     `
     document.querySelectorAll('.pokemon')[i].innerHTML += out;
 }
@@ -85,3 +91,57 @@ for (let i = 0; i < 2; i++) {
         randomPicker(i)
     })
 }
+// BATTLE
+/*
+const startBattle = () => {
+    const hp1 = document.querySelectorAll('.hp-bar')[1].textContent;
+    const hp2 = document.querySelectorAll('.hp-bar')[3].textContent;
+    console.log(parseInt(hp1));
+    console.log(hp2)
+    function attac(hp1) {
+        parseInt(hp1) - 10;
+        
+         
+    }
+    let dmg = attac(hp1)
+    console.log(dmg)
+    
+}
+document.querySelector('#start').addEventListener('click', startBattle)
+*/
+
+ // curHealth = maxHealth;
+ 
+
+document.querySelector("#start").addEventListener('click', function() {
+    const maxHealth = parseInt(document.querySelector('.total').innerHTML.substring(0, Math.floor(document.querySelector('.total').innerHTML.length / 2)));
+    curHealth = maxHealth  
+  if (curHealth == 0) {
+    console.log('DEATH')
+  } else {
+    var damage = Math.floor((Math.random() * 20) + 1);
+    //$(".health-bar-red, .health-bar").stop();
+    curHealth = curHealth - damage;
+    if (curHealth < 0) {
+      curHealth = 0;
+    } else {
+      console.log('You took ' + damage + ' points of damage');
+    }
+    applyChange(curHealth, maxHealth);
+  }
+});
+
+function applyChange(curHealth, maxHealth) {
+    var a = curHealth * (100 / maxHealth);/*
+    $(".health-bar-text").html(Math.round(a) + "%");
+    $(".health-bar-red").animate({
+      'width': a + "%"
+    }, 700);
+    $(".health-bar").animate({
+      'width': a + "%"
+    }, 500);
+    $(".health-bar-blue").animate({
+      'width': a + "%"
+    }, 300);*/
+    document.querySelector('.total').innerHTML = (curHealth + "/" + maxHealth);
+  }
