@@ -114,24 +114,41 @@ document.querySelector('#start').addEventListener('click', startBattle)
  
 
 document.querySelector("#start").addEventListener('click', function() {
-    const maxHealth = parseInt(document.querySelector('.total').innerHTML.substring(0, Math.floor(document.querySelector('.total').innerHTML.length / 2)));
-    curHealth = maxHealth  
-  if (curHealth == 0) {
-    console.log('DEATH')
-  } else {
-    var damage = Math.floor((Math.random() * 20) + 1);
-    //$(".health-bar-red, .health-bar").stop();
-    curHealth = curHealth - damage;
-    if (curHealth < 0) {
-      curHealth = 0;
-    } else {
-      console.log('You took ' + damage + ' points of damage');
+    const pokeOneMaxHealth = parseInt(document.querySelectorAll('.total')[0].innerHTML.substring(0, Math.floor(document.querySelector('.total').innerHTML.length / 2)));
+    const pokeTwoMaxHealth = parseInt(document.querySelectorAll('.total')[1].innerHTML.substring(0, Math.floor(document.querySelector('.total').innerHTML.length / 2)));
+    pokeOneCurHealth = pokeOneMaxHealth;
+    pokeTwoCurHealth = pokeTwoMaxHealth;
+    const pokeOneAtt = parseInt(document.querySelectorAll('.stats')[0].firstElementChild.lastElementChild.innerHTML.substring(7, document.querySelectorAll('.stats')[0].firstElementChild.lastElementChild.innerHTML.length));
+    const pokeTwoAtt = parseInt(document.querySelectorAll('.stats')[1].firstElementChild.lastElementChild.innerHTML.substring(7, document.querySelectorAll('.stats')[0].firstElementChild.lastElementChild.innerHTML.length)); 
+    const pokeOneAttack = () => {
+        const i = 1;
+        let damage = Math.floor(pokeOneAtt / 2);
+        //$(".health-bar-red, .health-bar").stop();
+        pokeTwoCurHealth = pokeTwoCurHealth - damage;
+        if (pokeTwoCurHealth < 0) {
+            pokeTwoCurHealth = 0;
+        } else {
+            console.log('Poke Two took ' + damage + ' points of damage');
+        }
+        applyChange(pokeTwoCurHealth, pokeTwoMaxHealth, i); 
     }
-    applyChange(curHealth, maxHealth);
-  }
+    const pokeTwoAttack = () => {
+        const i = 0;
+        let damage = Math.floor(pokeTwoAtt / 2);
+        //$(".health-bar-red, .health-bar").stop();
+        pokeOneCurHealth = pokeOneCurHealth - damage;
+        if (pokeOneCurHealth < 0) {
+            pokeOneCurHealth = 0;
+        } else {
+            console.log('Poke One took ' + damage + ' points of damage');
+        }
+        applyChange(pokeOneCurHealth, pokeOneMaxHealth, i);
+    }
+    pokeOneAttack()
+    pokeTwoAttack()
 });
 
-function applyChange(curHealth, maxHealth) {
+function applyChange(curHealth, maxHealth, i) {
     var a = curHealth * (100 / maxHealth);/*
     $(".health-bar-text").html(Math.round(a) + "%");
     $(".health-bar-red").animate({
@@ -143,5 +160,5 @@ function applyChange(curHealth, maxHealth) {
     $(".health-bar-blue").animate({
       'width': a + "%"
     }, 300);*/
-    document.querySelector('.total').innerHTML = (curHealth + "/" + maxHealth);
+    document.querySelectorAll('.total')[i].innerHTML = (curHealth + "/" + maxHealth);
   }
