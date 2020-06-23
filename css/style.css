@@ -224,4 +224,7 @@ html, body {
     position: relative;
     bottom: 80px;
   }
+  .animate {
+      transition: 700ms;
+  }
   

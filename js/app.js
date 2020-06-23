@@ -92,45 +92,29 @@ for (let i = 0; i < 2; i++) {
     })
 }
 // BATTLE
-/*
-const startBattle = () => {
-    const hp1 = document.querySelectorAll('.hp-bar')[1].textContent;
-    const hp2 = document.querySelectorAll('.hp-bar')[3].textContent;
-    console.log(parseInt(hp1));
-    console.log(hp2)
-    function attac(hp1) {
-        parseInt(hp1) - 10;
-        
-         
-    }
-    let dmg = attac(hp1)
-    console.log(dmg)
-    
-}
-document.querySelector('#start').addEventListener('click', startBattle)
-*/
-
- // curHealth = maxHealth;
- 
 
 document.querySelector("#start").addEventListener('click', function() {
-    const pokeOneMaxHealth = parseInt(document.querySelectorAll('.total')[0].innerHTML.substring(0, Math.floor(document.querySelector('.total').innerHTML.length / 2)));
-    const pokeTwoMaxHealth = parseInt(document.querySelectorAll('.total')[1].innerHTML.substring(0, Math.floor(document.querySelector('.total').innerHTML.length / 2)));
+    const pokeOneMaxHealth = parseInt(document.querySelectorAll('.total')[0].innerHTML.substring(0, Math.floor(document.querySelectorAll('.total')[0].innerHTML.length / 2)));
+    const pokeTwoMaxHealth = parseInt(document.querySelectorAll('.total')[1].innerHTML.substring(0, Math.floor(document.querySelectorAll('.total')[1].innerHTML.length / 2)));
     pokeOneCurHealth = pokeOneMaxHealth;
     pokeTwoCurHealth = pokeTwoMaxHealth;
     const pokeOneAtt = parseInt(document.querySelectorAll('.stats')[0].firstElementChild.lastElementChild.innerHTML.substring(7, document.querySelectorAll('.stats')[0].firstElementChild.lastElementChild.innerHTML.length));
-    const pokeTwoAtt = parseInt(document.querySelectorAll('.stats')[1].firstElementChild.lastElementChild.innerHTML.substring(7, document.querySelectorAll('.stats')[0].firstElementChild.lastElementChild.innerHTML.length)); 
+    const pokeTwoAtt = parseInt(document.querySelectorAll('.stats')[1].firstElementChild.lastElementChild.innerHTML.substring(7, document.querySelectorAll('.stats')[1].firstElementChild.lastElementChild.innerHTML.length));
+    console.log('Poke one attack is ' + pokeOneAtt)
+    console.log('Poke two attack is ' + pokeTwoAtt) 
     const pokeOneAttack = () => {
         const i = 1;
         let damage = Math.floor(pokeOneAtt / 2);
         //$(".health-bar-red, .health-bar").stop();
         pokeTwoCurHealth = pokeTwoCurHealth - damage;
         if (pokeTwoCurHealth < 0) {
+            console.log('Poke two died')
             pokeTwoCurHealth = 0;
         } else {
             console.log('Poke Two took ' + damage + ' points of damage');
         }
         applyChange(pokeTwoCurHealth, pokeTwoMaxHealth, i); 
+        //return pokeTwoCurHealth
     }
     const pokeTwoAttack = () => {
         const i = 0;
@@ -138,26 +122,40 @@ document.querySelector("#start").addEventListener('click', function() {
         //$(".health-bar-red, .health-bar").stop();
         pokeOneCurHealth = pokeOneCurHealth - damage;
         if (pokeOneCurHealth < 0) {
+            console.log('Poke One died');
             pokeOneCurHealth = 0;
         } else {
             console.log('Poke One took ' + damage + ' points of damage');
         }
         applyChange(pokeOneCurHealth, pokeOneMaxHealth, i);
+        //return pokeOneCurHealth
     }
-    pokeOneAttack()
-    pokeTwoAttack()
+    do {
+        setTimeout(()=> {
+            pokeOneAttack()
+            console.log('Poke two current hp is ' + pokeTwoCurHealth)
+        }, 2000)
+        if (pokeTwoCurHealth > 0) {
+            setTimeout(()=> {
+                pokeTwoAttack()
+                console.log('Poke One current hp is ' + pokeOneCurHealth)
+            }, 2000)
+        }
+    } while (pokeOneCurHealth > 0 && pokeTwoCurHealth > 0)
 });
 
 function applyChange(curHealth, maxHealth, i) {
-    var a = curHealth * (100 / maxHealth);/*
-    $(".health-bar-text").html(Math.round(a) + "%");
-    $(".health-bar-red").animate({
-      'width': a + "%"
-    }, 700);
-    $(".health-bar").animate({
-      'width': a + "%"
-    }, 500);
-    $(".health-bar-blue").animate({
+    var a = curHealth * (100 / maxHealth);
+    document.querySelectorAll('.health-bar-text')[i].innerHTML = (Math.round(a) + "%");
+    
+    document.querySelectorAll(".health-bar-red")[i].classList.add('animate');
+    setTimeout(()=> document.querySelectorAll(".health-bar-red")[i].classList.remove('animate'), 700);
+    document.querySelectorAll(".health-bar-red")[i].style.width = (a + "%")
+    document.querySelectorAll(".health-bar")[i].classList.add('animate');
+    setTimeout(()=> document.querySelectorAll(".health-bar-red")[i].classList.remove('animate'), 700);
+    document.querySelectorAll(".health-bar")[i].style.width = (a + "%")
+    /*
+    document.querySelectorAll(".health-bar-blue")[i].animate({
       'width': a + "%"
     }, 300);*/
     document.querySelectorAll('.total')[i].innerHTML = (curHealth + "/" + maxHealth);
