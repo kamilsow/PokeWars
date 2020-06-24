@@ -28,7 +28,7 @@ const createPokeObject = (jsonObject) => {
         speedValue: jsonObject.stats[5].base_stat,
         hp: jsonObject.stats[0].stat.name,
         hpValue: jsonObject.stats[0].base_stat,
-        id: jsonObject.id, 
+        id: jsonObject.id,
         typesOut: typesOut
     }
     return pokemon
@@ -86,14 +86,14 @@ const createHpBar = (pokemon, i) => {
     document.querySelectorAll('.pokemon')[i].innerHTML += out;
 }
 for (let i = 0; i < 2; i++) {
-    document.querySelectorAll('.pick')[i].addEventListener('click', function() {
+    document.querySelectorAll('.pick')[i].addEventListener('click', function () {
         document.querySelectorAll('.pokemon')[i].innerHTML = loader
         randomPicker(i)
     })
 }
 // BATTLE
 
-document.querySelector("#start").addEventListener('click', function() {
+document.querySelector("#start").addEventListener('click', function () {
     const pokeOneMaxHealth = parseInt(document.querySelectorAll('.total')[0].innerHTML.substring(0, Math.floor(document.querySelectorAll('.total')[0].innerHTML.length / 2)));
     const pokeTwoMaxHealth = parseInt(document.querySelectorAll('.total')[1].innerHTML.substring(0, Math.floor(document.querySelectorAll('.total')[1].innerHTML.length / 2)));
     pokeOneCurHealth = pokeOneMaxHealth;
@@ -101,11 +101,10 @@ document.querySelector("#start").addEventListener('click', function() {
     const pokeOneAtt = parseInt(document.querySelectorAll('.stats')[0].firstElementChild.lastElementChild.innerHTML.substring(7, document.querySelectorAll('.stats')[0].firstElementChild.lastElementChild.innerHTML.length));
     const pokeTwoAtt = parseInt(document.querySelectorAll('.stats')[1].firstElementChild.lastElementChild.innerHTML.substring(7, document.querySelectorAll('.stats')[1].firstElementChild.lastElementChild.innerHTML.length));
     console.log('Poke one attack is ' + pokeOneAtt)
-    console.log('Poke two attack is ' + pokeTwoAtt) 
+    console.log('Poke two attack is ' + pokeTwoAtt)
     const pokeOneAttack = () => {
         const i = 1;
         let damage = Math.floor(pokeOneAtt / 2);
-        //$(".health-bar-red, .health-bar").stop();
         pokeTwoCurHealth = pokeTwoCurHealth - damage;
         if (pokeTwoCurHealth < 0) {
             console.log('Poke two died')
@@ -113,13 +112,11 @@ document.querySelector("#start").addEventListener('click', function() {
         } else {
             console.log('Poke Two took ' + damage + ' points of damage');
         }
-        applyChange(pokeTwoCurHealth, pokeTwoMaxHealth, i); 
-        //return pokeTwoCurHealth
+        applyChange(pokeTwoCurHealth, pokeTwoMaxHealth, i);
     }
     const pokeTwoAttack = () => {
         const i = 0;
-        let damage = Math.floor(pokeTwoAtt / 2);
-        //$(".health-bar-red, .health-bar").stop();
+        let damage = Math.floor(pokeTwoAtt / 3);
         pokeOneCurHealth = pokeOneCurHealth - damage;
         if (pokeOneCurHealth < 0) {
             console.log('Poke One died');
@@ -128,35 +125,40 @@ document.querySelector("#start").addEventListener('click', function() {
             console.log('Poke One took ' + damage + ' points of damage');
         }
         applyChange(pokeOneCurHealth, pokeOneMaxHealth, i);
-        //return pokeOneCurHealth
     }
-    do {
-        setTimeout(()=> {
-            pokeOneAttack()
-            console.log('Poke two current hp is ' + pokeTwoCurHealth)
-        }, 2000)
+    async function turn () {
+        console.log('turn start')
+        await new Promise((resolve, reject) => {
+            setTimeout(() => {
+                pokeOneAttack();
+                resolve(console.log('Poke two current hp is ' + pokeTwoCurHealth));
+            }, 2000);
+        });
         if (pokeTwoCurHealth > 0) {
-            setTimeout(()=> {
-                pokeTwoAttack()
-                console.log('Poke One current hp is ' + pokeOneCurHealth)
-            }, 2000)
+            await new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    pokeTwoAttack();
+                    resolve(console.log('Poke One current hp is ' + pokeOneCurHealth));
+                }, 2000);
+            })
         }
-    } while (pokeOneCurHealth > 0 && pokeTwoCurHealth > 0)
+        console.log('turn finish')
+    }
 });
 
 function applyChange(curHealth, maxHealth, i) {
     var a = curHealth * (100 / maxHealth);
     document.querySelectorAll('.health-bar-text')[i].innerHTML = (Math.round(a) + "%");
-    
+
     document.querySelectorAll(".health-bar-red")[i].classList.add('animate');
-    setTimeout(()=> document.querySelectorAll(".health-bar-red")[i].classList.remove('animate'), 700);
+    setTimeout(() => document.querySelectorAll(".health-bar-red")[i].classList.remove('animate'), 700);
     document.querySelectorAll(".health-bar-red")[i].style.width = (a + "%")
     document.querySelectorAll(".health-bar")[i].classList.add('animate');
-    setTimeout(()=> document.querySelectorAll(".health-bar-red")[i].classList.remove('animate'), 700);
+    setTimeout(() => document.querySelectorAll(".health-bar-red")[i].classList.remove('animate'), 700);
     document.querySelectorAll(".health-bar")[i].style.width = (a + "%")
     /*
     document.querySelectorAll(".health-bar-blue")[i].animate({
       'width': a + "%"
     }, 300);*/
     document.querySelectorAll('.total')[i].innerHTML = (curHealth + "/" + maxHealth);
-  }
+}
