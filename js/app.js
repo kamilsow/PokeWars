@@ -100,15 +100,16 @@ document.querySelector("#start").addEventListener('click', function () {
     pokeTwoCurHealth = pokeTwoMaxHealth;
     const pokeOneAtt = parseInt(document.querySelectorAll('.stats')[0].firstElementChild.lastElementChild.innerHTML.substring(7, document.querySelectorAll('.stats')[0].firstElementChild.lastElementChild.innerHTML.length));
     const pokeTwoAtt = parseInt(document.querySelectorAll('.stats')[1].firstElementChild.lastElementChild.innerHTML.substring(7, document.querySelectorAll('.stats')[1].firstElementChild.lastElementChild.innerHTML.length));
-    console.log('Poke one attack is ' + pokeOneAtt)
-    console.log('Poke two attack is ' + pokeTwoAtt)
+    console.log('Poke one attack is ' + Math.floor(pokeOneAtt / 3))
+    console.log('Poke two attack is ' + Math.floor(pokeTwoAtt / 3))
     const pokeOneAttack = () => {
         const i = 1;
-        let damage = Math.floor(pokeOneAtt / 2);
+        let damage = Math.floor(pokeOneAtt / 3);
         pokeTwoCurHealth = pokeTwoCurHealth - damage;
-        if (pokeTwoCurHealth < 0) {
+        if (pokeTwoCurHealth <= 0) {
             console.log('Poke two died')
             pokeTwoCurHealth = 0;
+            end();
         } else {
             console.log('Poke Two took ' + damage + ' points of damage');
         }
@@ -118,31 +119,44 @@ document.querySelector("#start").addEventListener('click', function () {
         const i = 0;
         let damage = Math.floor(pokeTwoAtt / 3);
         pokeOneCurHealth = pokeOneCurHealth - damage;
-        if (pokeOneCurHealth < 0) {
+        if (pokeOneCurHealth <= 0) {
             console.log('Poke One died');
             pokeOneCurHealth = 0;
+            end();
         } else {
             console.log('Poke One took ' + damage + ' points of damage');
         }
         applyChange(pokeOneCurHealth, pokeOneMaxHealth, i);
-    }
+    }/*
+    function battle () {
+        if (pokeTwoCurHealth > 0) {
+            interval1 = setInterval(pokeOneAttack, 2000)
+        }
+        interval2 = setInterval(pokeTwoAttack, 2000)
+    }*/
     async function turn () {
         console.log('turn start')
-        await new Promise((resolve, reject) => {
-            setTimeout(() => {
-                pokeOneAttack();
-                resolve(console.log('Poke two current hp is ' + pokeTwoCurHealth));
-            }, 2000);
-        });
+        if (pokeOneCurHealth > 0) {
+            await new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    pokeOneAttack();
+                    resolve(console.log('Poke two current hp is ' + pokeTwoCurHealth));
+                }, 1500);
+            });
+        }
         if (pokeTwoCurHealth > 0) {
             await new Promise((resolve, reject) => {
                 setTimeout(() => {
                     pokeTwoAttack();
                     resolve(console.log('Poke One current hp is ' + pokeOneCurHealth));
-                }, 2000);
+                }, 1500);
             })
         }
         console.log('turn finish')
+    }
+    interval = setInterval(turn, 3100)
+    function end () {
+        clearInterval(interval)
     }
 });
 
