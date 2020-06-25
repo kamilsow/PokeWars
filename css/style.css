@@ -225,6 +225,6 @@ html, body {
     bottom: 80px;
   }
   .animate {
-      transition: 700ms;
+      transition-duration: 1500ms;
   }
   
