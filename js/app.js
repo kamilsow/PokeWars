@@ -1,9 +1,8 @@
 // CARD CREATION
-const randomButtons = document.querySelectorAll('.pick')
 const loader = `<div class="loader-wrapper"><div class="loader-text">Loading...</div><span class="loader"><span class="loader-inner"></span></span></div>`;
-
-const randomPicker = (i) => {
-    var url = "https://pokeapi.co/api/v2/pokemon/" + (Math.floor(Math.random() * 807) + 1);
+const searchBoxes = document.querySelectorAll('.search-box');
+const picker = (i, query) => {
+    var url = "https://pokeapi.co/api/v2/pokemon/" + query;
     fetch(url).then(data => data.json())
         .then(jsonObject => {
             console.log(jsonObject)
@@ -85,9 +84,15 @@ const createHpBar = (pokemon, i) => {
     document.querySelectorAll('.pokemon')[i].innerHTML += out;
 }
 for (let i = 0; i < 2; i++) {
-    document.querySelectorAll('.pick')[i].addEventListener('click', function () {
+    document.querySelectorAll('.pick-random')[i].addEventListener('click', function () {
         document.querySelectorAll('.pokemon')[i].innerHTML = loader
-        randomPicker(i)
+        const query = (Math.floor(Math.random() * 807) + 1)
+        picker(i, query)
+    })
+    document.querySelectorAll('.pick-search')[i].addEventListener('click', function() {
+        document.querySelectorAll('.pokemon')[i].innerHTML = loader
+        const query = searchBoxes[i].value
+        picker(i, query)
     })
 }
 // BATTLE
