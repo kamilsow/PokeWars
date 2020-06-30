@@ -1,6 +1,7 @@
 // CARD CREATION
 const loader = `<div class="loader-wrapper"><div class="loader-text">Loading...</div><span class="loader"><span class="loader-inner"></span></span></div>`;
 const searchBoxes = document.querySelectorAll('.search-box');
+const messageBox = document.querySelector('.message-box');
 const picker = (i, query) => {
     var url = "https://pokeapi.co/api/v2/pokemon/" + query;
     fetch(url).then(data => data.json())
@@ -98,24 +99,26 @@ for (let i = 0; i < 2; i++) {
 // BATTLE
 
 document.querySelector("#start").addEventListener('click', function () {
+    messageBox.innerHTML += `Battle starts in 3 sec<br />`
+    let counter = 0;
+    const pokeOne = document.querySelectorAll('.card')[0].firstElementChild.textContent.charAt(0).toLocaleUpperCase() + document.querySelectorAll('.card')[0].firstElementChild.textContent.slice(1)
+    const pokeTwo = document.querySelectorAll('.card')[1].firstElementChild.textContent.charAt(0).toLocaleUpperCase() + document.querySelectorAll('.card')[1].firstElementChild.textContent.slice(1)
     const pokeOneMaxHealth = parseInt(document.querySelectorAll('.total')[0].innerHTML.substring(0, Math.floor(document.querySelectorAll('.total')[0].innerHTML.length / 2)));
     const pokeTwoMaxHealth = parseInt(document.querySelectorAll('.total')[1].innerHTML.substring(0, Math.floor(document.querySelectorAll('.total')[1].innerHTML.length / 2)));
     pokeOneCurHealth = pokeOneMaxHealth;
     pokeTwoCurHealth = pokeTwoMaxHealth;
     const pokeOneAtt = parseInt(document.querySelectorAll('.stats')[0].firstElementChild.lastElementChild.innerHTML.substring(7, document.querySelectorAll('.stats')[0].firstElementChild.lastElementChild.innerHTML.length));
     const pokeTwoAtt = parseInt(document.querySelectorAll('.stats')[1].firstElementChild.lastElementChild.innerHTML.substring(7, document.querySelectorAll('.stats')[1].firstElementChild.lastElementChild.innerHTML.length));
-    console.log('Poke one attack is ' + Math.floor(pokeOneAtt / 3))
-    console.log('Poke two attack is ' + Math.floor(pokeTwoAtt / 3))
     const pokeOneAttack = () => {
         const i = 1;
         let damage = Math.floor(pokeOneAtt / 5);
         pokeTwoCurHealth = pokeTwoCurHealth - damage;
         if (pokeTwoCurHealth <= 0) {
-            console.log('Poke two died')
+            messageBox.innerHTML += `${pokeTwo} took ${damage} points of damage and died. ${pokeOne} wins!`
             pokeTwoCurHealth = 0;
             end();
         } else {
-            console.log('Poke Two took ' + damage + ' points of damage');
+            messageBox.innerHTML += `${pokeTwo} took ${damage} points of damage <br />`
         }
         applyChange(pokeTwoCurHealth, pokeTwoMaxHealth, i);
     }
@@ -124,33 +127,31 @@ document.querySelector("#start").addEventListener('click', function () {
         let damage = Math.floor(pokeTwoAtt / 5);
         pokeOneCurHealth = pokeOneCurHealth - damage;
         if (pokeOneCurHealth <= 0) {
-            console.log('Poke One died');
+            messageBox.innerHTML += `${pokeOne} took ${damage} points of damage and died. ${pokeTwo} wins!`
             pokeOneCurHealth = 0;
             end();
         } else {
-            console.log('Poke One took ' + damage + ' points of damage');
+            messageBox.innerHTML += `${pokeOne} took ${damage} points of damage <br />`
         }
         applyChange(pokeOneCurHealth, pokeOneMaxHealth, i);
     }
     async function turn () {
-        console.log('turn start')
+        counter ++
         if (pokeOneCurHealth > 0) {
             await new Promise((resolve, reject) => {
                 setTimeout(() => {
-                    pokeOneAttack();
-                    resolve(console.log('Poke two current hp is ' + pokeTwoCurHealth));
+                    messageBox.innerHTML += `Turn ${counter}<br />`
+                    resolve(pokeOneAttack());
                 }, 1500);
             });
         }
         if (pokeTwoCurHealth > 0) {
             await new Promise((resolve, reject) => {
                 setTimeout(() => {
-                    pokeTwoAttack();
-                    resolve(console.log('Poke One current hp is ' + pokeOneCurHealth));
+                    resolve(pokeTwoAttack());
                 }, 1500);
             })
         }
-        console.log('turn finish')
     }
     interval = setInterval(turn, 3100)
     function end () {
