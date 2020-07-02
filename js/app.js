@@ -57,12 +57,16 @@ const createType = (pokeType) => {
     return `<p class="${pokeType}">${pokeType}</p>`
 }
 const checkType = () => {
-    var types = document.querySelectorAll('.type');
+    let types = document.querySelectorAll('.type');
     Array.from(types).forEach(type => {
-        var cardType = type.firstElementChild.textContent;
-        var typeArr = ['bug', 'dark', 'normal', 'fire', 'dragon', 'flying', 'electric', 'fairy', 'fighting', 'ghost', 'poison', 'grass', 'ground', 'ice', 'steel', 'psychic', 'rock', 'water'];
+        let cardType = type.firstElementChild.textContent;
+        const typeArr = ['bug', 'dark', 'normal', 'fire', 'dragon', 'flying', 'electric', 'fairy', 'fighting', 'ghost', 'poison', 'grass', 'ground', 'ice', 'steel', 'psychic', 'rock', 'water'];
+        const strongAgainst = ['psychic', 'ghost', 'NONE', 'steel', 'bug', 'fighting', 'fire', 'dark', 'rock', 'fairy', 'grass', 'water', 'poison', 'dragon', 'ice', 'electric', 'flying', 'ground'];
+        const weakAgainst = ['dragon', 'fairy', 'NONE', 'electric', 'ice', 'rock', 'psychic', 'ghost', 'flying', 'dark', 'ground', 'poison', 'water', 'steel', 'fire', 'bug', 'fighting', 'grass'];
         for (let i = 0; i < typeArr.length; i++) {
             if (cardType == typeArr[i]) {
+                console.log('This pokemon is strong against ' + strongAgainst[i])
+                console.log('This pokemon is weak against ' + weakAgainst[i])
                 type.parentElement.firstElementChild.classList.add(typeArr[i]);
                 type.parentElement.children[3].classList.add(typeArr[i] + '2');
                 type.parentElement.classList.add(typeArr[i] + '2');
