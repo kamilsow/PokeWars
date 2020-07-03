@@ -9,7 +9,7 @@ const picker = (i, query) => {
             console.log(jsonObject)
             return createPokeObject(jsonObject)
         }).then(pokemon => {
-            createPokeTab(i, pokemon)
+            createPoke(i, pokemon)
             checkType()
             createHpBar(pokemon, i)
         })
@@ -33,7 +33,7 @@ const createPokeObject = (jsonObject) => {
     }
     return pokemon
 }
-const createPokeTab = (i, pokemon) => {
+const createPoke = (i, pokemon) => {
     let out = `
         <div class="card">
             <h1>${pokemon.name}</h1>
@@ -47,7 +47,12 @@ const createPokeTab = (i, pokemon) => {
                     <div><img src="img/wingfoot.png"><p>${pokemon.speed} ${pokemon.speedValue}</p></div>
                     <div><img src="img/heart-plus.png"><p>${pokemon.hp} ${pokemon.hpValue}</p></div>
                 </div>
-                <div class="id">Pokemon id: ${pokemon.id}</div>
+                <div class="misc">
+                    <div class="id">Pokemon id: ${pokemon.id}</div>
+                    <div class="elements"></div>
+                    <div class="elements"></div>
+                </div>
+                
             <div>
         </div>
     `
@@ -65,8 +70,8 @@ const checkType = () => {
         const weakAgainst = ['dragon', 'fairy', 'NONE', 'electric', 'ice', 'rock', 'psychic', 'ghost', 'flying', 'dark', 'ground', 'poison', 'water', 'steel', 'fire', 'bug', 'fighting', 'grass'];
         for (let i = 0; i < typeArr.length; i++) {
             if (cardType == typeArr[i]) {
-                console.log('This pokemon is strong against ' + strongAgainst[i])
-                console.log('This pokemon is weak against ' + weakAgainst[i])
+                type.parentElement.lastElementChild.children[1].children[1].innerHTML = `Strong against <p class="${strongAgainst[i]}">${strongAgainst[i]}</p>`
+                type.parentElement.lastElementChild.children[1].children[2].innerHTML = `Weak against <p class="${weakAgainst[i]}">${weakAgainst[i]}</p>`
                 type.parentElement.firstElementChild.classList.add(typeArr[i]);
                 type.parentElement.children[3].classList.add(typeArr[i] + '2');
                 type.parentElement.classList.add(typeArr[i] + '2');
@@ -113,9 +118,22 @@ document.querySelector("#start").addEventListener('click', function () {
     pokeTwoCurHealth = pokeTwoMaxHealth;
     const pokeOneAtt = parseInt(document.querySelectorAll('.stats')[0].firstElementChild.lastElementChild.innerHTML.substring(7, document.querySelectorAll('.stats')[0].firstElementChild.lastElementChild.innerHTML.length));
     const pokeTwoAtt = parseInt(document.querySelectorAll('.stats')[1].firstElementChild.lastElementChild.innerHTML.substring(7, document.querySelectorAll('.stats')[1].firstElementChild.lastElementChild.innerHTML.length));
+    const pokeOneElement = document.querySelectorAll('.type')[0].firstElementChild.textContent
+    const pokeTwoElement = document.querySelectorAll('.type')[1].firstElementChild.textContent
+    const pokeOneStrong = document.querySelectorAll('.elements')[0].firstElementChild.textContent
+    const pokeOneWeak = document.querySelectorAll('.elements')[1].firstElementChild.textContent
+    const pokeTwoStrong = document.querySelectorAll('.elements')[2].firstElementChild.textContent
+    const pokeTwoWeak = document.querySelectorAll('.elements')[3].firstElementChild.textContent
+    console.log('Poke One element is ' + pokeOneElement + '. It is strong against ' + pokeOneStrong + ' and weak against ' + pokeOneWeak)
+    console.log('Poke Two element is ' + pokeTwoElement + '. It is strong against ' + pokeTwoStrong + ' and weak against ' + pokeTwoWeak)
+
     const pokeOneAttack = () => {
         const i = 1;
-        let damage = Math.floor(pokeOneAtt / 5);
+        let damage = 0;
+        if (pokeTwoElement == pokeOneStrong) {
+            damage = Math.floor(pokeOneAtt / 5) + 5;
+            messageBox.innerHTML += `Poke one deals additional 5 damage because he is strong against poke two <br />`
+        }
         pokeTwoCurHealth = pokeTwoCurHealth - damage;
         if (pokeTwoCurHealth <= 0) {
             messageBox.innerHTML += `${pokeTwo} took ${damage} points of damage and died. ${pokeOne} wins!`

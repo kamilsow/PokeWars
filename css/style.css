@@ -189,6 +189,16 @@ html, body {
     padding: 3px 15px 3px 15px;
     border-radius: 15px;
 }
+.misc {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.elements {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 /* HEALTH BAR */ 
 .health-box {
     background-color: #ccc;
