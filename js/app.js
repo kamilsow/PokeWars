@@ -112,12 +112,14 @@ document.querySelector("#start").addEventListener('click', function () {
     let counter = 0;
     const pokeOne = document.querySelectorAll('.card')[0].firstElementChild.textContent.charAt(0).toLocaleUpperCase() + document.querySelectorAll('.card')[0].firstElementChild.textContent.slice(1)
     const pokeTwo = document.querySelectorAll('.card')[1].firstElementChild.textContent.charAt(0).toLocaleUpperCase() + document.querySelectorAll('.card')[1].firstElementChild.textContent.slice(1)
-    const pokeOneMaxHealth = parseInt(document.querySelectorAll('.total')[0].innerHTML.substring(0, Math.floor(document.querySelectorAll('.total')[0].innerHTML.length / 2)));
-    const pokeTwoMaxHealth = parseInt(document.querySelectorAll('.total')[1].innerHTML.substring(0, Math.floor(document.querySelectorAll('.total')[1].innerHTML.length / 2)));
-    pokeOneCurHealth = pokeOneMaxHealth;
-    pokeTwoCurHealth = pokeTwoMaxHealth;
-    const pokeOneAtt = parseInt(document.querySelectorAll('.stats')[0].firstElementChild.lastElementChild.innerHTML.substring(7, document.querySelectorAll('.stats')[0].firstElementChild.lastElementChild.innerHTML.length));
-    const pokeTwoAtt = parseInt(document.querySelectorAll('.stats')[1].firstElementChild.lastElementChild.innerHTML.substring(7, document.querySelectorAll('.stats')[1].firstElementChild.lastElementChild.innerHTML.length));
+    const pokeOneMaxHealth = parseInt(document.querySelectorAll('.total')[0].innerHTML.substring(0, Math.floor(document.querySelectorAll('.total')[0].innerHTML.length / 2)))
+    const pokeTwoMaxHealth = parseInt(document.querySelectorAll('.total')[1].innerHTML.substring(0, Math.floor(document.querySelectorAll('.total')[1].innerHTML.length / 2)))
+    pokeOneCurHealth = pokeOneMaxHealth
+    pokeTwoCurHealth = pokeTwoMaxHealth
+    const pokeOneAtt = parseInt(document.querySelectorAll('.stats')[0].firstElementChild.lastElementChild.innerHTML.substring(7, document.querySelectorAll('.stats')[0].firstElementChild.lastElementChild.innerHTML.length))
+    const pokeTwoAtt = parseInt(document.querySelectorAll('.stats')[1].firstElementChild.lastElementChild.innerHTML.substring(7, document.querySelectorAll('.stats')[1].firstElementChild.lastElementChild.innerHTML.length))
+    const pokeOneDef = parseInt(document.querySelectorAll('.stats')[0].children[1].lastElementChild.innerHTML.substring(8, document.querySelectorAll('.stats')[0].children[1].lastElementChild.length))
+    const pokeTwoDef = parseInt(document.querySelectorAll('.stats')[1].children[1].lastElementChild.innerHTML.substring(8, document.querySelectorAll('.stats')[1].children[1].lastElementChild.length))
     const pokeOneElement = document.querySelectorAll('.type')[0].firstElementChild.textContent
     const pokeTwoElement = document.querySelectorAll('.type')[1].firstElementChild.textContent
     const pokeOneStrong = document.querySelectorAll('.elements')[0].firstElementChild.textContent
@@ -129,9 +131,11 @@ document.querySelector("#start").addEventListener('click', function () {
 
     const pokeOneAttack = () => {
         const i = 1;
-        let damage = 0;
+        let damage = pokeOneAtt;
+        let reduction = (pokeTwoDef / 2) * 0.01
+        damage = damage - (damage * reduction)
         if (pokeTwoElement == pokeOneStrong) {
-            damage = Math.floor(pokeOneAtt / 5) + 5;
+            damage += 5
             messageBox.innerHTML += `Poke one deals additional 5 damage because he is strong against poke two <br />`
         }
         pokeTwoCurHealth = pokeTwoCurHealth - damage;
@@ -146,7 +150,13 @@ document.querySelector("#start").addEventListener('click', function () {
     }
     const pokeTwoAttack = () => {
         const i = 0;
-        let damage = Math.floor(pokeTwoAtt / 5);
+        let damage = pokeTwoAtt;
+        let reduction = (pokeOneDef / 2) * 0.01 
+        damage = damage - (damage * reduction)
+        if (pokeOneElement == pokeTwoStrong) {
+            damage += 5
+            messageBox.innerHTML += `Poke two deals additional 5 damage because he is strong against poke one <br />`
+        }
         pokeOneCurHealth = pokeOneCurHealth - damage;
         if (pokeOneCurHealth <= 0) {
             messageBox.innerHTML += `${pokeOne} took ${damage} points of damage and died. ${pokeTwo} wins!`
