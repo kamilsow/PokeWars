@@ -106,7 +106,10 @@ for (let i = 0; i < 2; i++) {
     })
 }
 // BATTLE
-
+/* 
+    80% attack effectiveness 
+    %DEF reduction (max 90%)
+*/
 document.querySelector("#start").addEventListener('click', function () {
     messageBox.innerHTML += `Battle starts in 3 sec<br />`
     let counter = 0;
@@ -131,11 +134,14 @@ document.querySelector("#start").addEventListener('click', function () {
 
     const pokeOneAttack = () => {
         const i = 1;
-        let damage = pokeOneAtt;
-        let reduction = (pokeTwoDef / 2) * 0.01
+        let damage = pokeOneAtt * 0.8;
+        let reduction = pokeTwoDef * 0.01
+        if (pokeTwoDef >= 90) {
+            reduction = 0.9
+        }
         damage = damage - (damage * reduction)
         if (pokeTwoElement == pokeOneStrong) {
-            damage += 5
+            //damage += 5
             messageBox.innerHTML += `Poke one deals additional 5 damage because he is strong against poke two <br />`
         }
         pokeTwoCurHealth = pokeTwoCurHealth - damage;
@@ -150,8 +156,8 @@ document.querySelector("#start").addEventListener('click', function () {
     }
     const pokeTwoAttack = () => {
         const i = 0;
-        let damage = pokeTwoAtt;
-        let reduction = (pokeOneDef / 2) * 0.01 
+        let damage = pokeTwoAtt * 0.8;
+        let reduction = pokeOneDef * 0.01 
         damage = damage - (damage * reduction)
         if (pokeOneElement == pokeTwoStrong) {
             damage += 5
