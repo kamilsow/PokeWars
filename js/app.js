@@ -110,6 +110,7 @@ for (let i = 0; i < 2; i++) {
     80% attack effectiveness 
     %DEF reduction (max 90%)
 */
+document.querySelector("#stop").addEventListener('click', function() { console.log(Math.floor(Math.random() * 100 + 1))})
 document.querySelector("#start").addEventListener('click', function () {
     messageBox.innerHTML += `Battle starts in 3 sec<br />`
     let counter = 0;
@@ -134,42 +135,60 @@ document.querySelector("#start").addEventListener('click', function () {
 
     const pokeOneAttack = () => {
         const i = 1;
+        let dodgeChance = Math.floor(Math.random() * 100 + 1)
         let damage = pokeOneAtt * 0.8;
         let reduction = pokeTwoDef * 0.01
-        if (pokeTwoDef >= 90) {
-            reduction = 0.9
-        }
-        damage = damage - (damage * reduction)
-        if (pokeTwoElement == pokeOneStrong) {
-            //damage += 5
-            messageBox.innerHTML += `Poke one deals additional 5 damage because he is strong against poke two <br />`
-        }
-        pokeTwoCurHealth = pokeTwoCurHealth - damage;
-        if (pokeTwoCurHealth <= 0) {
-            messageBox.innerHTML += `${pokeTwo} took ${damage} points of damage and died. ${pokeOne} wins!`
-            pokeTwoCurHealth = 0;
-            end();
+        // Checking if pokemon dodges the attack
+        if (dodgeChance <= 50) {
+            damage = 0
+            messageBox.innerHTML += `${pokeTwo} dodges and takes no damage. <br />`
         } else {
-            messageBox.innerHTML += `${pokeTwo} took ${damage} points of damage <br />`
+            // if not -> normal battle
+            // max 90% dmg reducted (more than 90 defense doesn't count)
+            if (pokeTwoDef >= 90) {
+                reduction = 0.9
+            }
+            if (pokeTwoElement == pokeOneStrong) {
+                //damage += 5
+                messageBox.innerHTML += `Poke one deals additional 5 damage because he is strong against poke two <br />`
+            }
+            damage = (1 - reduction) * damage
+            pokeTwoCurHealth = pokeTwoCurHealth - damage;
+            if (pokeTwoCurHealth <= 0) {
+                messageBox.innerHTML += `${pokeTwo} took ${damage} points of damage and died. ${pokeOne} wins!`
+                pokeTwoCurHealth = 0;
+                end();
+            } else {
+                messageBox.innerHTML += `${pokeTwo} took ${damage} points of damage <br />`
+            }
         }
         applyChange(pokeTwoCurHealth, pokeTwoMaxHealth, i);
     }
     const pokeTwoAttack = () => {
         const i = 0;
+        let dodgeChance = Math.floor(Math.random() * 100 + 1)
         let damage = pokeTwoAtt * 0.8;
         let reduction = pokeOneDef * 0.01 
-        damage = damage - (damage * reduction)
-        if (pokeOneElement == pokeTwoStrong) {
-            damage += 5
-            messageBox.innerHTML += `Poke two deals additional 5 damage because he is strong against poke one <br />`
-        }
-        pokeOneCurHealth = pokeOneCurHealth - damage;
-        if (pokeOneCurHealth <= 0) {
-            messageBox.innerHTML += `${pokeOne} took ${damage} points of damage and died. ${pokeTwo} wins!`
-            pokeOneCurHealth = 0;
-            end();
+        if (dodgeChance <= 50) {
+            damage = 0
+            messageBox.innerHTML += `${pokeOne} dodges and takes no damage <br />.`
         } else {
-            messageBox.innerHTML += `${pokeOne} took ${damage} points of damage <br />`
+            if (pokeOneDef >= 90) {
+                reduction = 0.9
+            }
+            if (pokeOneElement == pokeTwoStrong) {
+                damage += 5
+                messageBox.innerHTML += `Poke two deals additional 5 damage because he is strong against poke one <br />`
+            }
+            damage = (1 - reduction) * damage
+            pokeOneCurHealth = pokeOneCurHealth - damage;
+            if (pokeOneCurHealth <= 0) {
+                messageBox.innerHTML += `${pokeOne} took ${damage} points of damage and died. ${pokeTwo} wins!`
+                pokeOneCurHealth = 0;
+                end();
+            } else {
+                messageBox.innerHTML += `${pokeOne} took ${damage} points of damage <br />`
+            }
         }
         applyChange(pokeOneCurHealth, pokeOneMaxHealth, i);
     }
