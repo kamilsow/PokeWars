@@ -132,16 +132,24 @@ document.querySelector("#start").addEventListener('click', function () {
     const pokeTwoWeak = document.querySelectorAll('.elements')[3].firstElementChild.textContent
     console.log('Poke One element is ' + pokeOneElement + '. It is strong against ' + pokeOneStrong + ' and weak against ' + pokeOneWeak)
     console.log('Poke Two element is ' + pokeTwoElement + '. It is strong against ' + pokeTwoStrong + ' and weak against ' + pokeTwoWeak)
-
+    // Checking if attacked pokemon's element is weak against attacking pokemon's element
+    if (pokeTwoElement == pokeOneStrong) {
+        messageBox.innerHTML += `Poke one deals additional 50% damage because he is strong against poke two <br />`
+    }
+    if (pokeOneElement == pokeTwoStrong) {
+        messageBox.innerHTML += `Poke two deals additional 50% damage because he is strong against poke one <br />`
+    }
     const pokeOneAttack = () => {
         const i = 1;
         let dodgeChance = Math.floor(Math.random() * 100 + 1)
         let damage = pokeOneAtt * 0.8;
         let reduction = pokeTwoDef * 0.01
+        let additionalInfo = ``
         // Checking if pokemon dodges the attack
         if (dodgeChance <= 50) {
             damage = 0
             messageBox.innerHTML += `${pokeTwo} dodges and takes no damage. <br />`
+            updateScroll()
         } else {
             // if not -> normal battle
             // max 90% dmg reducted (more than 90 defense doesn't count)
@@ -149,17 +157,19 @@ document.querySelector("#start").addEventListener('click', function () {
                 reduction = 0.9
             }
             if (pokeTwoElement == pokeOneStrong) {
-                //damage += 5
-                messageBox.innerHTML += `Poke one deals additional 5 damage because he is strong against poke two <br />`
+                damage += damage * 0.5
+                additionalInfo += `(+50%)`
             }
             damage = (1 - reduction) * damage
             pokeTwoCurHealth = pokeTwoCurHealth - damage;
             if (pokeTwoCurHealth <= 0) {
                 messageBox.innerHTML += `${pokeTwo} took ${damage} points of damage and died. ${pokeOne} wins!`
                 pokeTwoCurHealth = 0;
+                updateScroll()
                 end();
             } else {
-                messageBox.innerHTML += `${pokeTwo} took ${damage} points of damage <br />`
+                messageBox.innerHTML += `${pokeTwo} took ${damage} points of damage ${additionalInfo}<br />`
+                updateScroll()
             }
         }
         applyChange(pokeTwoCurHealth, pokeTwoMaxHealth, i);
@@ -169,25 +179,29 @@ document.querySelector("#start").addEventListener('click', function () {
         let dodgeChance = Math.floor(Math.random() * 100 + 1)
         let damage = pokeTwoAtt * 0.8;
         let reduction = pokeOneDef * 0.01 
+        let additionalInfo = ``
         if (dodgeChance <= 50) {
             damage = 0
             messageBox.innerHTML += `${pokeOne} dodges and takes no damage <br />.`
+            updateScroll()
         } else {
             if (pokeOneDef >= 90) {
                 reduction = 0.9
             }
             if (pokeOneElement == pokeTwoStrong) {
-                damage += 5
-                messageBox.innerHTML += `Poke two deals additional 5 damage because he is strong against poke one <br />`
+                damage += damage * 0.5
+                additionalInfo += `(+50%)`
             }
             damage = (1 - reduction) * damage
             pokeOneCurHealth = pokeOneCurHealth - damage;
             if (pokeOneCurHealth <= 0) {
                 messageBox.innerHTML += `${pokeOne} took ${damage} points of damage and died. ${pokeTwo} wins!`
                 pokeOneCurHealth = 0;
+                updateScroll()
                 end();
             } else {
-                messageBox.innerHTML += `${pokeOne} took ${damage} points of damage <br />`
+                messageBox.innerHTML += `${pokeOne} took ${damage} points of damage ${additionalInfo}<br />`
+                updateScroll()
             }
         }
         applyChange(pokeOneCurHealth, pokeOneMaxHealth, i);
@@ -233,4 +247,7 @@ function applyChange(curHealth, maxHealth, i) {
     document.querySelectorAll(".health-bar-blue")[i].style.width = (a + "%")
 
     document.querySelectorAll('.total')[i].innerHTML = (curHealth + "/" + maxHealth);
+}
+function updateScroll(){
+    messageBox.scrollTop = messageBox.scrollHeight;
 }
