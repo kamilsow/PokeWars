@@ -142,11 +142,12 @@ document.querySelector("#start").addEventListener('click', function () {
     const pokeOneAttack = () => {
         const i = 1;
         let dodgeChance = Math.floor(Math.random() * 100 + 1)
+        let critChance = Math.floor(Math.random() * 100 + 1)
         let damage = pokeOneAtt * 0.8;
         let reduction = pokeTwoDef * 0.01
         let additionalInfo = ``
         // Checking if pokemon dodges the attack
-        if (dodgeChance <= 50) {
+        if (dodgeChance <= 5) {
             damage = 0
             messageBox.innerHTML += `${pokeTwo} dodges and takes no damage. <br />`
             updateScroll()
@@ -158,7 +159,11 @@ document.querySelector("#start").addEventListener('click', function () {
             }
             if (pokeTwoElement == pokeOneStrong) {
                 damage += damage * 0.5
-                additionalInfo += `(+50%)`
+                additionalInfo += `(+50%) `
+            }
+            if (critChance <= 5) {
+                damage += damage * 0.5
+                additionalInfo += `(+50% crit)`
             }
             damage = (1 - reduction) * damage
             pokeTwoCurHealth = pokeTwoCurHealth - damage;
@@ -177,10 +182,11 @@ document.querySelector("#start").addEventListener('click', function () {
     const pokeTwoAttack = () => {
         const i = 0;
         let dodgeChance = Math.floor(Math.random() * 100 + 1)
+        let critChance = Math.floor(Math.random() * 100 + 1)
         let damage = pokeTwoAtt * 0.8;
         let reduction = pokeOneDef * 0.01 
         let additionalInfo = ``
-        if (dodgeChance <= 50) {
+        if (dodgeChance <= 5) {
             damage = 0
             messageBox.innerHTML += `${pokeOne} dodges and takes no damage <br />.`
             updateScroll()
@@ -190,7 +196,11 @@ document.querySelector("#start").addEventListener('click', function () {
             }
             if (pokeOneElement == pokeTwoStrong) {
                 damage += damage * 0.5
-                additionalInfo += `(+50%)`
+                additionalInfo += `(+50%) `
+            }
+            if (critChance <= 5) {
+                damage += damage * 0.5
+                additionalInfo += `(+50% crit)`
             }
             damage = (1 - reduction) * damage
             pokeOneCurHealth = pokeOneCurHealth - damage;
