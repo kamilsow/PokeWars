@@ -124,14 +124,14 @@ document.querySelector("#start").addEventListener('click', function () {
     const pokeTwoAtt = parseInt(document.querySelectorAll('.stats')[1].firstElementChild.lastElementChild.innerHTML.substring(7, document.querySelectorAll('.stats')[1].firstElementChild.lastElementChild.innerHTML.length))
     const pokeOneDef = parseInt(document.querySelectorAll('.stats')[0].children[1].lastElementChild.innerHTML.substring(8, document.querySelectorAll('.stats')[0].children[1].lastElementChild.length))
     const pokeTwoDef = parseInt(document.querySelectorAll('.stats')[1].children[1].lastElementChild.innerHTML.substring(8, document.querySelectorAll('.stats')[1].children[1].lastElementChild.length))
+    const pokeOneSpeed = parseInt(document.querySelectorAll('.stats')[0].children[2].lastElementChild.innerHTML.substring(6, document.querySelectorAll('.stats')[0].children[2].lastElementChild.innerHTML.length))
+    const pokeTwoSpeed = parseInt(document.querySelectorAll('.stats')[1].children[2].lastElementChild.innerHTML.substring(6, document.querySelectorAll('.stats')[1].children[2].lastElementChild.innerHTML.length))
     const pokeOneElement = document.querySelectorAll('.type')[0].firstElementChild.textContent
     const pokeTwoElement = document.querySelectorAll('.type')[1].firstElementChild.textContent
     const pokeOneStrong = document.querySelectorAll('.elements')[0].firstElementChild.textContent
     const pokeOneWeak = document.querySelectorAll('.elements')[1].firstElementChild.textContent
     const pokeTwoStrong = document.querySelectorAll('.elements')[2].firstElementChild.textContent
     const pokeTwoWeak = document.querySelectorAll('.elements')[3].firstElementChild.textContent
-    console.log('Poke One element is ' + pokeOneElement + '. It is strong against ' + pokeOneStrong + ' and weak against ' + pokeOneWeak)
-    console.log('Poke Two element is ' + pokeTwoElement + '. It is strong against ' + pokeTwoStrong + ' and weak against ' + pokeTwoWeak)
     // Checking if attacked pokemon's element is weak against attacking pokemon's element
     if (pokeTwoElement == pokeOneStrong) {
         messageBox.innerHTML += `Poke one deals additional 50% damage because he is strong against poke two <br />`
@@ -218,13 +218,15 @@ document.querySelector("#start").addEventListener('click', function () {
     }
     async function turn () {
         counter ++
-        if (pokeOneCurHealth > 0) {
-            await new Promise((resolve, reject) => {
-                setTimeout(() => {
-                    messageBox.innerHTML += `Turn ${counter}<br />`
-                    resolve(pokeOneAttack());
-                }, 1500);
-            });
+        messageBox.innerHTML += `Turn ${counter}<br />`
+        if (pokeOneSpeed > pokeTwoSpeed) {
+            if (pokeOneCurHealth > 0) {
+                await new Promise((resolve, reject) => {
+                    setTimeout(() => {
+                        resolve(pokeOneAttack());
+                    }, 1500);
+                });
+            }
         }
         if (pokeTwoCurHealth > 0) {
             await new Promise((resolve, reject) => {
@@ -232,6 +234,15 @@ document.querySelector("#start").addEventListener('click', function () {
                     resolve(pokeTwoAttack());
                 }, 1500);
             })
+        }
+        if (pokeTwoSpeed > pokeOneSpeed) {
+            if (pokeOneCurHealth > 0) {
+                await new Promise((resolve, reject) => {
+                    setTimeout(() => {
+                        resolve(pokeOneAttack());
+                    }, 1500);
+                });
+            }
         }
     }
     interval = setInterval(turn, 3100)
