@@ -107,7 +107,6 @@ for (let i = 0; i < 2; i++) {
 }
 // BATTLE
 /* 
-    80% attack effectiveness 
     %DEF reduction (max 90%)
 */
 document.querySelector("#stop").addEventListener('click', function() { console.log(Math.floor(Math.random() * 100 + 1))})
@@ -120,8 +119,8 @@ document.querySelector("#start").addEventListener('click', function () {
     const pokeTwoMaxHealth = parseInt(document.querySelectorAll('.total')[1].innerHTML.substring(0, Math.floor(document.querySelectorAll('.total')[1].innerHTML.length / 2)))
     pokeOneCurHealth = pokeOneMaxHealth
     pokeTwoCurHealth = pokeTwoMaxHealth
-    const pokeOneAtt = parseInt(document.querySelectorAll('.stats')[0].firstElementChild.lastElementChild.innerHTML.substring(7, document.querySelectorAll('.stats')[0].firstElementChild.lastElementChild.innerHTML.length))
-    const pokeTwoAtt = parseInt(document.querySelectorAll('.stats')[1].firstElementChild.lastElementChild.innerHTML.substring(7, document.querySelectorAll('.stats')[1].firstElementChild.lastElementChild.innerHTML.length))
+    let pokeOneAtt = parseInt(document.querySelectorAll('.stats')[0].firstElementChild.lastElementChild.innerHTML.substring(7, document.querySelectorAll('.stats')[0].firstElementChild.lastElementChild.innerHTML.length))
+    let pokeTwoAtt = parseInt(document.querySelectorAll('.stats')[1].firstElementChild.lastElementChild.innerHTML.substring(7, document.querySelectorAll('.stats')[1].firstElementChild.lastElementChild.innerHTML.length))
     const pokeOneDef = parseInt(document.querySelectorAll('.stats')[0].children[1].lastElementChild.innerHTML.substring(8, document.querySelectorAll('.stats')[0].children[1].lastElementChild.length))
     const pokeTwoDef = parseInt(document.querySelectorAll('.stats')[1].children[1].lastElementChild.innerHTML.substring(8, document.querySelectorAll('.stats')[1].children[1].lastElementChild.length))
     const pokeOneSpeed = parseInt(document.querySelectorAll('.stats')[0].children[2].lastElementChild.innerHTML.substring(6, document.querySelectorAll('.stats')[0].children[2].lastElementChild.innerHTML.length))
@@ -134,16 +133,18 @@ document.querySelector("#start").addEventListener('click', function () {
     const pokeTwoWeak = document.querySelectorAll('.elements')[3].firstElementChild.textContent
     // Checking if attacked pokemon's element is weak against attacking pokemon's element
     if (pokeTwoElement == pokeOneStrong) {
+        pokeOneAtt += pokeOneAtt * 0.5
         messageBox.innerHTML += `Poke one deals additional 50% damage because he is strong against poke two <br />`
     }
     if (pokeOneElement == pokeTwoStrong) {
+        pokeTwoAtt += pokeTwoAtt * 0.5
         messageBox.innerHTML += `Poke two deals additional 50% damage because he is strong against poke one <br />`
     }
     const pokeOneAttack = () => {
         const i = 1;
+        let damage = pokeOneAtt
         let dodgeChance = Math.floor(Math.random() * 100 + 1)
         let critChance = Math.floor(Math.random() * 100 + 1)
-        let damage = pokeOneAtt * 0.8;
         let reduction = pokeTwoDef * 0.01
         let additionalInfo = ``
         // Checking if pokemon dodges the attack
@@ -156,10 +157,6 @@ document.querySelector("#start").addEventListener('click', function () {
             // max 90% dmg reducted (more than 90 defense doesn't count)
             if (pokeTwoDef >= 90) {
                 reduction = 0.9
-            }
-            if (pokeTwoElement == pokeOneStrong) {
-                damage += damage * 0.5
-                additionalInfo += `(+50%) `
             }
             if (critChance <= 5) {
                 damage += damage * 0.5
@@ -181,9 +178,9 @@ document.querySelector("#start").addEventListener('click', function () {
     }
     const pokeTwoAttack = () => {
         const i = 0;
+        let damage = pokeTwoAtt 
         let dodgeChance = Math.floor(Math.random() * 100 + 1)
         let critChance = Math.floor(Math.random() * 100 + 1)
-        let damage = pokeTwoAtt * 0.8;
         let reduction = pokeOneDef * 0.01 
         let additionalInfo = ``
         if (dodgeChance <= 5) {
@@ -193,10 +190,6 @@ document.querySelector("#start").addEventListener('click', function () {
         } else {
             if (pokeOneDef >= 90) {
                 reduction = 0.9
-            }
-            if (pokeOneElement == pokeTwoStrong) {
-                damage += damage * 0.5
-                additionalInfo += `(+50%) `
             }
             if (critChance <= 5) {
                 damage += damage * 0.5
