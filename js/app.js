@@ -162,8 +162,15 @@ document.querySelector("#start").addEventListener('click', function () {
                 damage += damage * 0.5
                 additionalInfo += `(+50% crit)`
             }
+            // Base dmg
             damage = (1 - reduction) * damage
-            pokeTwoCurHealth = pokeTwoCurHealth - damage;
+            // Dmg range 
+            let min = (damage * 0.8).toFixed(1)
+            let max = (damage * 1.2).toFixed(1)
+            console.log(min + ' ' + max)
+            let calc = (Math.random() * (Number(max) - Number(min)) + Number(min)).toFixed(1)
+            damage = calc
+            pokeTwoCurHealth = (pokeTwoCurHealth - damage).toFixed(1);
             if (pokeTwoCurHealth <= 0) {
                 messageBox.innerHTML += `${pokeTwo} took ${damage} points of damage and died. ${pokeOne} wins!`
                 pokeTwoCurHealth = 0;
@@ -196,7 +203,12 @@ document.querySelector("#start").addEventListener('click', function () {
                 additionalInfo += `(+50% crit)`
             }
             damage = (1 - reduction) * damage
-            pokeOneCurHealth = pokeOneCurHealth - damage;
+            let min = (damage * 0.8).toFixed(1)
+            let max = (damage * 1.2).toFixed(1)
+            console.log(min + ' ' + max)
+            let calc = (Math.random() * (Number(max) - Number(min)) + Number(min)).toFixed(1)
+            damage = calc
+            pokeOneCurHealth = (pokeOneCurHealth - damage).toFixed(1);
             if (pokeOneCurHealth <= 0) {
                 messageBox.innerHTML += `${pokeOne} took ${damage} points of damage and died. ${pokeTwo} wins!`
                 pokeOneCurHealth = 0;
