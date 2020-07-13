@@ -142,13 +142,19 @@ document.querySelector("#start").addEventListener('click', function () {
     }
     const pokeOneAttack = () => {
         const i = 1;
+        let dodgeChance = 5
+        let critChance = 5
         let damage = pokeOneAtt
-        let dodgeChance = Math.floor(Math.random() * 100 + 1)
-        let critChance = Math.floor(Math.random() * 100 + 1)
+        let dodgeRNG = Math.floor(Math.random() * 100 + 1)
+        let critRNG = Math.floor(Math.random() * 100 + 1)
         let reduction = pokeTwoDef * 0.01
         let additionalInfo = ``
-        // Checking if pokemon dodges the attack
-        if (dodgeChance <= 5) {
+        if (pokeTwoSpeed > 50) {
+            dodgeChance += Math.floor((pokeTwoSpeed - 50) / 5)
+            console.log(dodgeChance)
+        }
+        // Checking if pokemon dodges the attack (Base dodge chance is 5%, dodgeRNG is random number between 1 and 100 and determines dodge success)
+        if (dodgeRNG <= dodgeChance) {
             damage = 0
             messageBox.innerHTML += `${pokeTwo} dodges and takes no damage. <br />`
             updateScroll()
@@ -158,7 +164,7 @@ document.querySelector("#start").addEventListener('click', function () {
             if (pokeTwoDef >= 90) {
                 reduction = 0.9
             }
-            if (critChance <= 5) {
+            if (critRNG <= critChance) {
                 damage += damage * 0.5
                 additionalInfo += `(+50% crit)`
             }
@@ -185,12 +191,18 @@ document.querySelector("#start").addEventListener('click', function () {
     }
     const pokeTwoAttack = () => {
         const i = 0;
+        let dodgeChance = 5
+        let critChance = 5
         let damage = pokeTwoAtt 
-        let dodgeChance = Math.floor(Math.random() * 100 + 1)
-        let critChance = Math.floor(Math.random() * 100 + 1)
+        let dodgeRNG = Math.floor(Math.random() * 100 + 1)
+        let critRNG = Math.floor(Math.random() * 100 + 1)
         let reduction = pokeOneDef * 0.01 
         let additionalInfo = ``
-        if (dodgeChance <= 5) {
+        if (pokeOneSpeed > 50) {
+            dodgeChance += Math.floor((pokeOneSpeed - 50) / 5)
+            console.log(dodgeChance)
+        }
+        if (dodgeRNG <= dodgeChance) {
             damage = 0
             messageBox.innerHTML += `${pokeOne} dodges and takes no damage <br />.`
             updateScroll()
@@ -198,7 +210,7 @@ document.querySelector("#start").addEventListener('click', function () {
             if (pokeOneDef >= 90) {
                 reduction = 0.9
             }
-            if (critChance <= 5) {
+            if (critRNG <= critChance) {
                 damage += damage * 0.5
                 additionalInfo += `(+50% crit)`
             }
