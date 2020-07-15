@@ -113,6 +113,7 @@ document.querySelector("#stop").addEventListener('click', function () { console.
 document.querySelector("#start").addEventListener('click', function () {
     messageBox.innerHTML += `Battle starts in 3 sec<br />`
     let counter = 0
+    let rng = Math.random().toFixed(1)
     const pokeOne = document.querySelectorAll('.card')[0].firstElementChild.textContent.charAt(0).toLocaleUpperCase() + document.querySelectorAll('.card')[0].firstElementChild.textContent.slice(1)
     const pokeTwo = document.querySelectorAll('.card')[1].firstElementChild.textContent.charAt(0).toLocaleUpperCase() + document.querySelectorAll('.card')[1].firstElementChild.textContent.slice(1)
     const pokeOneMaxHealth = parseInt(document.querySelectorAll('.total')[0].innerHTML.substring(0, Math.floor(document.querySelectorAll('.total')[0].innerHTML.length / 2)))
@@ -262,7 +263,7 @@ document.querySelector("#start").addEventListener('click', function () {
     async function turn() {
         counter++
         messageBox.innerHTML += `Turn ${counter}<br />`
-        if (pokeOneSpeed > pokeTwoSpeed) {
+        async function firstPokeAttack() {
             if (pokeOneCurHealth > 0) {
                 await new Promise((resolve, reject) => {
                     setTimeout(() => {
@@ -271,21 +272,31 @@ document.querySelector("#start").addEventListener('click', function () {
                 })
             }
         }
-        if (pokeTwoCurHealth > 0) {
-            await new Promise((resolve, reject) => {
-                setTimeout(() => {
-                    resolve(pokeTwoAttack())
-                }, 1500)
-            })
+        async function secondPokeAttack() {
+            if (pokeTwoCurHealth > 0) {
+                await new Promise((resolve, reject) => {
+                    setTimeout(() => {
+                        resolve(pokeTwoAttack())
+                    }, 1500)
+                })
+            }
+        }
+        if (pokeOneSpeed === pokeTwoSpeed) {
+            if(rng <= 0.5) {
+                await firstPokeAttack()
+                await secondPokeAttack()
+            } else {
+                await secondPokeAttack()
+                await firstPokeAttack()
+            }
+        }
+        if (pokeOneSpeed > pokeTwoSpeed) {
+            await firstPokeAttack()
+            await secondPokeAttack()
         }
         if (pokeTwoSpeed > pokeOneSpeed) {
-            if (pokeOneCurHealth > 0) {
-                await new Promise((resolve, reject) => {
-                    setTimeout(() => {
-                        resolve(pokeOneAttack())
-                    }, 1500)
-                })
-            }
+            await secondPokeAttack()
+            await firstPokeAttack()
         }
     }
     interval = setInterval(turn, 3100)
