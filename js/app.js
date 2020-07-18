@@ -53,8 +53,9 @@ const createPoke = (i, pokemon) => {
                     <div class="elements"></div>
                 </div>
                 
-            <div>
+            </div>
         </div>
+        <div class="animate-info">-15</div>
     `
     document.querySelectorAll('.pokemon')[i].innerHTML = out
 }
@@ -191,6 +192,26 @@ document.querySelector("#start").addEventListener('click', function () {
         console.log(min + ' ' + max)
         let calc = (Math.random() * (Number(max) - Number(min)) + Number(min)).toFixed(1)
         damage = calc
+        // WORKING AREA 
+        var elem=document.querySelectorAll('.animate-info')[1]
+        var x=0;
+
+        function moreVisible()
+        {
+            if(x==1)clearInterval(t);
+            x+=0.05;
+            elem.style.opacity=x;
+            elem.style.filter="alpha(opacity="+(x*100)+")";
+        }
+        
+        document.querySelectorAll('.animate-info')[1].style.left = '0'
+        document.querySelectorAll('.animate-info')[1].innerHTML = damage
+        document.querySelectorAll('.animate-info')[1].innerHTML += `<img src="img/sword-wound-right.png">`
+        document.querySelectorAll('.animate-info')[1].classList.add('animate')
+        //document.querySelectorAll('.animate-info')[1].style.display = 'flex'
+        var t=setInterval(moreVisible, 25);
+        // ====END OF WORKING AREA==== 
+
         pokeTwoCurHealth = (pokeTwoCurHealth - damage).toFixed(1)
         if (pokeTwoCurHealth <= 0) {
             messageBox.innerHTML += `${pokeTwo} took ${damage} points of damage and died. ${pokeOne} wins! ${additionalInfo}`
@@ -202,6 +223,19 @@ document.querySelector("#start").addEventListener('click', function () {
             updateScroll()
         }
         applyChange(pokeTwoCurHealth, pokeTwoMaxHealth, i)
+        await new Promise((resolve, reject) => {
+            setTimeout( () => {
+                resolve(()=> {
+                    function lessVisible() {
+                        if(x==0)clearInterval(y);
+                        x-=0.05;
+                        elem.style.opacity=x;
+                        elem.style.filter="alpha(opacity="+(x*100)+")";
+                    }
+                    var y=setInterval(lessVisible,25)
+                });
+            },500)
+        })
     }
     const pokeTwoAttack = () => {
         const i = 0
@@ -248,6 +282,11 @@ document.querySelector("#start").addEventListener('click', function () {
         console.log(min + ' ' + max)
         let calc = (Math.random() * (Number(max) - Number(min)) + Number(min)).toFixed(1)
         damage = calc
+
+        document.querySelectorAll('.animate-info')[0].innerHTML = damage
+        document.querySelectorAll('.animate-info')[0].innerHTML += `<img src="img/sword-wound-left.png">`
+        document.querySelectorAll('.animate-info')[0].style.display = 'flex'
+
         pokeOneCurHealth = (pokeOneCurHealth - damage).toFixed(1)
         if (pokeOneCurHealth <= 0) {
             messageBox.innerHTML += `${pokeOne} took ${damage} points of damage and died. ${pokeTwo} wins! ${additionalInfo}`
