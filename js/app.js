@@ -194,19 +194,18 @@ document.querySelector("#start").addEventListener('click', function () {
         damage = calc
         // WORKING AREA 
         let elem = document.querySelectorAll('.animate-info')[1]
-        let x = 0;
+        let x = 0
         function moreVisible() {
-            if(x >= 1)clearInterval(t);
-            x += 0.10;
-            elem.style.opacity = x;
-            elem.style.filter = "alpha(opacity=" + (x*100) + ")";
+            if (x >= 1) clearInterval(t)
+            x += 0.10
+            elem.style.opacity = x
         }
-        
+
         document.querySelectorAll('.animate-info')[1].style.left = '0'
         document.querySelectorAll('.animate-info')[1].innerHTML = damage
         document.querySelectorAll('.animate-info')[1].innerHTML += `<img src="img/sword-wound-right.png">`
         //document.querySelectorAll('.animate-info')[1].classList.add('animate')
-        var t=setInterval(moreVisible, 12);
+        var t = setInterval(moreVisible, 12);
         // ====END OF WORKING AREA==== 
 
         pokeTwoCurHealth = (pokeTwoCurHealth - damage).toFixed(1)
@@ -268,20 +267,18 @@ document.querySelector("#start").addEventListener('click', function () {
         damage = calc
 
         let elem = document.querySelectorAll('.animate-info')[0]
-        let x = 0;
+        let x = 0
 
         function moreVisible() {
-            console.log(x)
-            if(x >= 1)clearInterval(t);
-            x += 0.05;
-            elem.style.opacity = x;
-            elem.style.filter = "alpha(opacity=" + (x*100) + ")";
+            if (x >= 1) clearInterval(t)
+            x += 0.05
+            elem.style.opacity = x
         }
-        
+
         document.querySelectorAll('.animate-info')[0].innerHTML = damage
         document.querySelectorAll('.animate-info')[0].innerHTML += `<img src="img/sword-wound-left.png">`
         //document.querySelectorAll('.animate-info')[0].classList.add('animate')
-        var t=setInterval(moreVisible, 25);
+        var t = setInterval(moreVisible, 25);
 
         pokeOneCurHealth = (pokeOneCurHealth - damage).toFixed(1)
         if (pokeOneCurHealth <= 0) {
@@ -298,22 +295,19 @@ document.querySelector("#start").addEventListener('click', function () {
     async function turn() {
         counter++
         messageBox.innerHTML += `Turn ${counter}<br />`
-        async function animate() {
-            await new Promise(() => {
-                setTimeout(() => {
-                    var elem = document.querySelectorAll('.animate-info')[0]
-                    var x = 1
-                    function lessVisible()
-                    {   
-                        console.log(x)
-                        if(x <= 0)clearInterval(y);
-                        x -= 0.05;
-                        elem.style.opacity = x;
-                        elem.style.filter = "alpha(opacity=" + (x*100) + ")";
-                    }
-                    const y = setInterval(lessVisible, 25)
-                },800)
-            })
+        function animate(i) {
+            console.log(i)
+            setTimeout(() => {
+                const elem = document.querySelectorAll('.animate-info')[i]
+                let x = elem.style.opacity
+                function lessVisible() {
+                    console.log(x)
+                    if (x <= 0) clearInterval(y);
+                    x -= 0.05;
+                    elem.style.opacity = x;
+                }
+                const y = setInterval(lessVisible, 25)
+            }, 800)
         }
         async function firstPokeAttack() {
             if (pokeOneCurHealth > 0) {
@@ -322,7 +316,8 @@ document.querySelector("#start").addEventListener('click', function () {
                         resolve(pokeOneAttack())
                     }, 1500)
                 })
-                //animate()
+                let i = 1
+                animate(i)
             }
         }
         async function secondPokeAttack() {
@@ -332,11 +327,12 @@ document.querySelector("#start").addEventListener('click', function () {
                         resolve(pokeTwoAttack())
                     }, 1500)
                 })
-                animate()
+                let i = 0
+                animate(i)
             }
         }
         if (pokeOneSpeed === pokeTwoSpeed) {
-            if(rng <= 0.5) {
+            if (rng <= 0.5) {
                 await firstPokeAttack()
                 await secondPokeAttack()
             } else {

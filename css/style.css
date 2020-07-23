@@ -201,7 +201,6 @@ html, body {
 .animate-info {
     display: flex;
     opacity: 0;
-    filter:alpha(opacity=0);
     position: absolute;
     right: 0;
     top: 100px;
