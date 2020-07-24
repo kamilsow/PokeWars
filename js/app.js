@@ -55,7 +55,7 @@ const createPoke = (i, pokemon) => {
                 
             </div>
         </div>
-        <div class="animate-info">-15</div>
+        <div class="animate-info"></div>
     `
     document.querySelectorAll('.pokemon')[i].innerHTML = out
 }
@@ -114,7 +114,7 @@ document.querySelector("#stop").addEventListener('click', function () { console.
 document.querySelector("#start").addEventListener('click', function () {
     messageBox.innerHTML += `Battle starts in 3 sec<br />`
     let counter = 0
-    let rng = Math.random().toFixed(1)
+    let coinFlip = Math.random().toFixed(1)
     const pokeOne = document.querySelectorAll('.card')[0].firstElementChild.textContent.charAt(0).toLocaleUpperCase() + document.querySelectorAll('.card')[0].firstElementChild.textContent.slice(1)
     const pokeTwo = document.querySelectorAll('.card')[1].firstElementChild.textContent.charAt(0).toLocaleUpperCase() + document.querySelectorAll('.card')[1].firstElementChild.textContent.slice(1)
     const pokeOneMaxHealth = parseInt(document.querySelectorAll('.total')[0].innerHTML.substring(0, Math.floor(document.querySelectorAll('.total')[0].innerHTML.length / 2)))
@@ -187,26 +187,12 @@ document.querySelector("#start").addEventListener('click', function () {
         // Base dmg
         damage = (1 - reduction) * damage
         // Dmg range 
-        let min = (damage * 0.8).toFixed(1)
-        let max = (damage * 1.2).toFixed(1)
-        console.log(min + ' ' + max)
-        let calc = (Math.random() * (Number(max) - Number(min)) + Number(min)).toFixed(1)
-        damage = calc
-        // WORKING AREA 
-        let elem = document.querySelectorAll('.animate-info')[1]
-        let x = 0
-        function moreVisible() {
-            if (x >= 1) clearInterval(t)
-            x += 0.10
-            elem.style.opacity = x
-        }
-
+        damage = damageRange(damage)
+        
+        showUpInfo(i)
         document.querySelectorAll('.animate-info')[1].style.left = '0'
         document.querySelectorAll('.animate-info')[1].innerHTML = damage
         document.querySelectorAll('.animate-info')[1].innerHTML += `<img src="img/sword-wound-right.png">`
-        //document.querySelectorAll('.animate-info')[1].classList.add('animate')
-        var t = setInterval(moreVisible, 12);
-        // ====END OF WORKING AREA==== 
 
         pokeTwoCurHealth = (pokeTwoCurHealth - damage).toFixed(1)
         if (pokeTwoCurHealth <= 0) {
@@ -260,25 +246,12 @@ document.querySelector("#start").addEventListener('click', function () {
             additionalInfo += `(+50% crit)`
         }
         damage = (1 - reduction) * damage
-        let min = (damage * 0.8).toFixed(1)
-        let max = (damage * 1.2).toFixed(1)
-        console.log(min + ' ' + max)
-        let calc = (Math.random() * (Number(max) - Number(min)) + Number(min)).toFixed(1)
-        damage = calc
+        damage = damageRange(damage)
 
-        let elem = document.querySelectorAll('.animate-info')[0]
-        let x = 0
-
-        function moreVisible() {
-            if (x >= 1) clearInterval(t)
-            x += 0.05
-            elem.style.opacity = x
-        }
-
+        showUpInfo(i)
         document.querySelectorAll('.animate-info')[0].innerHTML = damage
         document.querySelectorAll('.animate-info')[0].innerHTML += `<img src="img/sword-wound-left.png">`
         //document.querySelectorAll('.animate-info')[0].classList.add('animate')
-        var t = setInterval(moreVisible, 25);
 
         pokeOneCurHealth = (pokeOneCurHealth - damage).toFixed(1)
         if (pokeOneCurHealth <= 0) {
@@ -301,10 +274,9 @@ document.querySelector("#start").addEventListener('click', function () {
                 const elem = document.querySelectorAll('.animate-info')[i]
                 let x = elem.style.opacity
                 function lessVisible() {
-                    console.log(x)
-                    if (x <= 0) clearInterval(y);
-                    x -= 0.05;
-                    elem.style.opacity = x;
+                    if (x <= 0) clearInterval(y)
+                    x -= 0.05
+                    elem.style.opacity = x
                 }
                 const y = setInterval(lessVisible, 25)
             }, 800)
@@ -332,7 +304,7 @@ document.querySelector("#start").addEventListener('click', function () {
             }
         }
         if (pokeOneSpeed === pokeTwoSpeed) {
-            if (rng <= 0.5) {
+            if (coinFlip <= 0.5) {
                 await firstPokeAttack()
                 await secondPokeAttack()
             } else {
@@ -375,4 +347,21 @@ function applyChange(curHealth, maxHealth, i) {
 }
 function updateScroll() {
     messageBox.scrollTop = messageBox.scrollHeight
+}
+function showUpInfo(i) {
+    let elem = document.querySelectorAll('.animate-info')[i]
+    let x = 0
+    function moreVisible() {
+        if (x >= 1) clearInterval(t)
+        x += 0.05
+        elem.style.opacity = x
+    }
+    var t = setInterval(moreVisible, 25)
+}
+function damageRange(damage) {
+    let min = (damage * 0.8).toFixed(1)
+    let max = (damage * 1.2).toFixed(1)
+    console.log(min + ' ' + max)
+    let calc = (Math.random() * (Number(max) - Number(min)) + Number(min)).toFixed(1)
+    return calc
 }
