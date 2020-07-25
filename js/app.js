@@ -115,6 +115,7 @@ document.querySelector("#start").addEventListener('click', function () {
     messageBox.innerHTML += `Battle starts in 3 sec<br />`
     let counter = 0
     let coinFlip = Math.random().toFixed(1)
+    document.querySelectorAll('.animate-info')[1].style.left = '0'
     const pokeOne = document.querySelectorAll('.card')[0].firstElementChild.textContent.charAt(0).toLocaleUpperCase() + document.querySelectorAll('.card')[0].firstElementChild.textContent.slice(1)
     const pokeTwo = document.querySelectorAll('.card')[1].firstElementChild.textContent.charAt(0).toLocaleUpperCase() + document.querySelectorAll('.card')[1].firstElementChild.textContent.slice(1)
     const pokeOneMaxHealth = parseInt(document.querySelectorAll('.total')[0].innerHTML.substring(0, Math.floor(document.querySelectorAll('.total')[0].innerHTML.length / 2)))
@@ -145,7 +146,7 @@ document.querySelector("#start").addEventListener('click', function () {
     const pokeOneAttack = () => {
         const i = 1
         let dodgeChance = 5 //it is dodge chance of pokemon two
-        let critChance = 5
+        let critChance = 50
         let damage = pokeOneAtt
         let dodgeRNG = Math.floor(Math.random() * 100 + 1)
         let critRNG = Math.floor(Math.random() * 100 + 1)
@@ -158,20 +159,21 @@ document.querySelector("#start").addEventListener('click', function () {
             let blockRNG = Math.floor(Math.random() * 100 + 1)
             dodgeChance = 0
             if (blockRNG <= blockChance) {
-                damage = 0
                 messageBox.innerHTML += `${pokeTwo} blocks incomming damage. <br />`
                 updateScroll()
+                document.querySelectorAll('.animate-info')[1].innerHTML = `<img src="img/shield-reflect-right.png">`
+                showUpInfo(i)
                 return
             }
         } else if (pokeTwoSpeed > 50) {
             console.log('odpalilo sie sprawdzanie dodga pokemona 2')
             dodgeChance += Math.floor((pokeTwoSpeed - 50) / 5)
-            console.log(dodgeChance)
             if (dodgeRNG <= dodgeChance) {
                 // Checking if pokemon dodges the attack (Base dodge chance is 5%, dodgeRNG is random number between 1 and 100 and determines dodge success)
-                damage = 0
                 messageBox.innerHTML += `${pokeTwo} dodges and takes no damage. <br />`
                 updateScroll()
+                document.querySelectorAll('.animate-info')[1].innerHTML = `<img src="img/dodging.png">`
+                showUpInfo(i)
                 return
             }
         }
@@ -183,16 +185,15 @@ document.querySelector("#start").addEventListener('click', function () {
         if (critRNG <= critChance) {
             damage += damage * 0.5
             additionalInfo += `(+50% crit)`
-        }
+            document.querySelectorAll('.animate-info')[1].innerHTML = `<img src="img/bullseye-right.png">`
+        } else document.querySelectorAll('.animate-info')[1].innerHTML = `<img src="img/sword-wound-right.png">`
         // Base dmg
         damage = (1 - reduction) * damage
         // Dmg range 
         damage = damageRange(damage)
         
+        document.querySelectorAll('.animate-info')[1].innerHTML += damage
         showUpInfo(i)
-        document.querySelectorAll('.animate-info')[1].style.left = '0'
-        document.querySelectorAll('.animate-info')[1].innerHTML = damage
-        document.querySelectorAll('.animate-info')[1].innerHTML += `<img src="img/sword-wound-right.png">`
 
         pokeTwoCurHealth = (pokeTwoCurHealth - damage).toFixed(1)
         if (pokeTwoCurHealth <= 0) {
@@ -209,7 +210,7 @@ document.querySelector("#start").addEventListener('click', function () {
     const pokeTwoAttack = () => {
         const i = 0
         let dodgeChance = 5
-        let critChance = 5
+        let critChance = 50
         let damage = pokeTwoAtt
         let dodgeRNG = Math.floor(Math.random() * 100 + 1)
         let critRNG = Math.floor(Math.random() * 100 + 1)
@@ -221,9 +222,10 @@ document.querySelector("#start").addEventListener('click', function () {
             let blockRNG = Math.floor(Math.random() * 100 + 1)
             dodgeChance = 0
             if (blockRNG <= blockChance) {
-                damage = 0
                 messageBox.innerHTML += `${pokeOne} blocks incomming damage. <br />`
                 updateScroll()
+                document.querySelectorAll('.animate-info')[0].innerHTML = `<img src="img/shield-reflect-left.png">`
+                showUpInfo(i)
                 return
             }
         } else if (pokeOneSpeed > 50) {
@@ -231,9 +233,10 @@ document.querySelector("#start").addEventListener('click', function () {
             dodgeChance += Math.floor((pokeOneSpeed - 50) / 5)
             console.log(dodgeChance)
             if (dodgeRNG <= dodgeChance) {
-                damage = 0
                 messageBox.innerHTML += `${pokeOne} dodges and takes no damage. <br />`
                 updateScroll()
+                document.querySelectorAll('.animate-info')[0].innerHTML = `<img src="img/dodging.png">`
+                showUpInfo(i)
                 return
             }
         }
@@ -244,14 +247,13 @@ document.querySelector("#start").addEventListener('click', function () {
         if (critRNG <= critChance) {
             damage += damage * 0.5
             additionalInfo += `(+50% crit)`
-        }
+            document.querySelectorAll('.animate-info')[0].innerHTML = `<img src="img/bullseye-left.png">`
+        } else document.querySelectorAll('.animate-info')[0].innerHTML = `<img src="img/sword-wound-left.png">`
         damage = (1 - reduction) * damage
         damage = damageRange(damage)
 
+        document.querySelectorAll('.animate-info')[0].innerHTML += damage
         showUpInfo(i)
-        document.querySelectorAll('.animate-info')[0].innerHTML = damage
-        document.querySelectorAll('.animate-info')[0].innerHTML += `<img src="img/sword-wound-left.png">`
-        //document.querySelectorAll('.animate-info')[0].classList.add('animate')
 
         pokeOneCurHealth = (pokeOneCurHealth - damage).toFixed(1)
         if (pokeOneCurHealth <= 0) {
