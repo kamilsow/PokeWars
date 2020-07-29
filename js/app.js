@@ -2,17 +2,17 @@
 const loader = `<div class="loader-wrapper"><div class="loader-text">Loading...</div><span class="loader"><span class="loader-inner"></span></span></div>`
 const searchBoxes = document.querySelectorAll('.search-box')
 const messageBox = document.querySelector('.message-box')
-const picker = (i, query) => {
+const picker = async (i, query) => {
     var url = "https://pokeapi.co/api/v2/pokemon/" + query
-    fetch(url).then(data => data.json())
+    await fetch(url).then(data => data.json())
         .then(jsonObject => {
-            console.log(jsonObject)
             return createPokeObject(jsonObject)
         }).then(pokemon => {
             createPoke(i, pokemon)
             checkType()
             createHpBar(pokemon, i)
         })
+        .catch(err => console.log(err))
 }
 const createPokeObject = (jsonObject) => {
     jsonObject.types.sort((a, b) => (a.slot > b.slot) ? 1 : -1)
@@ -69,13 +69,22 @@ const checkType = () => {
         const typeArr = ['bug', 'dark', 'normal', 'fire', 'dragon', 'flying', 'electric', 'fairy', 'fighting', 'ghost', 'poison', 'grass', 'ground', 'ice', 'steel', 'psychic', 'rock', 'water']
         const strongAgainst = ['psychic', 'ghost', 'NONE', 'steel', 'bug', 'fighting', 'fire', 'dark', 'rock', 'fairy', 'grass', 'water', 'poison', 'dragon', 'ice', 'electric', 'flying', 'ground']
         const weakAgainst = ['dragon', 'fairy', 'NONE', 'electric', 'ice', 'rock', 'psychic', 'ghost', 'flying', 'dark', 'ground', 'poison', 'water', 'steel', 'fire', 'bug', 'fighting', 'grass']
+        //const icons = ['<object id="svg-object" data="svg/cigale.svg" type="image/svg+xml"></object>']
         for (let i = 0; i < typeArr.length; i++) {
             if (cardType == typeArr[i]) {
-                type.parentElement.lastElementChild.children[1].children[1].innerHTML = `Strong against <p class="${strongAgainst[i]}">${strongAgainst[i]}</p>`
-                type.parentElement.lastElementChild.children[1].children[2].innerHTML = `Weak against <p class="${weakAgainst[i]}">${weakAgainst[i]}</p>`
+                
+                let typeTab = `
+                    <p class='${typeArr[i]}'>
+                        <object id="svg-object" data="svg/${typeArr[i]}.svg" type="image/svg+xml"></object>
+                        ${typeArr[i]}
+                        <object id="svg-object" data="svg/${typeArr[i]}.svg" type="image/svg+xml">
+                    </p>`
+                type.parentElement.lastElementChild.children[1].children[1].innerHTML = `<p><object id="svg-object" data="svg/strong.svg" type="image/svg+xml"></object>Strong against</p><p class="${strongAgainst[i]}">${strongAgainst[i]}</p>`
+                type.parentElement.lastElementChild.children[1].children[2].innerHTML = `<p><object id="svg-object" data="svg/weak.svg" type="image/svg+xml"></object>Weak against</p><p class="${weakAgainst[i]}">${weakAgainst[i]}</p>`
                 type.parentElement.firstElementChild.classList.add(typeArr[i])
-                type.parentElement.children[3].classList.add(typeArr[i] + '2')
+                type.classList.add(typeArr[i] + '2')
                 type.parentElement.classList.add(typeArr[i] + '2')
+                type.innerHTML = typeTab
                 break
             }
         }
@@ -110,7 +119,7 @@ for (let i = 0; i < 2; i++) {
 /* 
     %DEF reduction (max 90%)
 */
-document.querySelector("#stop").addEventListener('click', function () { console.log(Math.floor(Math.random() * 100 + 1)) })
+document.querySelector("#stop").addEventListener('click', function () { console.log() })
 document.querySelector("#start").addEventListener('click', function () {
     messageBox.innerHTML += `Battle starts in 3 sec<br />`
     let counter = 0
@@ -131,9 +140,9 @@ document.querySelector("#start").addEventListener('click', function () {
     const pokeOneElement = document.querySelectorAll('.type')[0].firstElementChild.textContent
     const pokeTwoElement = document.querySelectorAll('.type')[1].firstElementChild.textContent
     const pokeOneStrong = document.querySelectorAll('.elements')[0].firstElementChild.textContent
-    const pokeOneWeak = document.querySelectorAll('.elements')[1].firstElementChild.textContent
     const pokeTwoStrong = document.querySelectorAll('.elements')[2].firstElementChild.textContent
-    const pokeTwoWeak = document.querySelectorAll('.elements')[3].firstElementChild.textContent
+    let critChance = 5
+    let dodgeChance = 5
     // Checking if attacked pokemon's element is weak against attacking pokemon's element
     if (pokeTwoElement == pokeOneStrong) {
         pokeOneAtt += pokeOneAtt * 0.5
@@ -143,10 +152,8 @@ document.querySelector("#start").addEventListener('click', function () {
         pokeTwoAtt += pokeTwoAtt * 0.5
         messageBox.innerHTML += `Poke two deals additional 50% damage because he is strong against poke one <br />`
     }
-    const pokeOneAttack = () => {
+    const pokeOneAttack = (critChance, dodgeChance) => {
         const i = 1
-        let dodgeChance = 5 //it is dodge chance of pokemon two
-        let critChance = 50
         let damage = pokeOneAtt
         let dodgeRNG = Math.floor(Math.random() * 100 + 1)
         let critRNG = Math.floor(Math.random() * 100 + 1)
@@ -207,10 +214,8 @@ document.querySelector("#start").addEventListener('click', function () {
         }
         applyChange(pokeTwoCurHealth, pokeTwoMaxHealth, i)
     }
-    const pokeTwoAttack = () => {
+    const pokeTwoAttack = (critChance, dodgeChance) => {
         const i = 0
-        let dodgeChance = 5
-        let critChance = 50
         let damage = pokeTwoAtt
         let dodgeRNG = Math.floor(Math.random() * 100 + 1)
         let critRNG = Math.floor(Math.random() * 100 + 1)

@@ -135,18 +135,32 @@ html, body {
     padding-top: 10px;
 }
 .type {
+    display: flex;
     border-top: 2px solid black;
     border-bottom: 2px solid black;
 }
 .type p {
+    display: flex;
     font-size: 1.25em;
     text-transform: capitalize;
     font-weight: bold;
     color: white;
     width: 100%;
-    text-align: center;
+    justify-content: center;
+    align-items: center;
     margin: 0 auto 0 auto;
     padding: 0.3em 0;
+}
+.type > p > #svg-object {
+    position: relative;
+    height: 40px;
+    width: 40px;
+    margin: -5px 10px -5px 10px;
+}
+.misc > .elements > p > #svg-object {
+    height: 20px;
+    width: 20px;
+    margin-bottom: -5px;
 }
 .bug {background-color: #A8b820;}
 .bug2 {background-color: #dbeb53; border-color: #758500;}
@@ -203,8 +217,9 @@ html, body {
     opacity: 0;
     position: absolute;
     right: 0;
-    top: 100px;
+    top: 70px;
     flex-direction: column;
+    margin: 0 75px;
 }
 .animate-info > img {
     height: 80px;
