@@ -75,8 +75,8 @@ html, body {
     position: relative;
     display: flex;
     flex-direction: column;
-    min-width: 400px;
-    min-height: 400px;
+    min-width: 300px;
+    min-height: 300px;
     margin: 15px;
     align-items: center;
 }
@@ -230,7 +230,7 @@ html, body {
 .health-box {
     background-color: #ccc;
     height: 30px;
-    width: 500px;
+    width: 300px;
     margin: 0 auto;
     border: solid 1px #aaa;
 }

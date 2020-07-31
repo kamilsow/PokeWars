@@ -156,6 +156,8 @@ document.querySelector("#start").addEventListener('click', function () {
     }
     const pokeOneReductedDmg = damageReductionCalc(pokeOneAtt, pokeTwoDef)
     const pokeTwoReductedDmg = damageReductionCalc(pokeTwoAtt, pokeOneDef)
+    battleStats(pokeOne, pokeOneReductedDmg, pokeOneDef, critChance, pokeOneDodge)
+    battleStats(pokeTwo, pokeTwoReductedDmg, pokeTwoDef, critChance, pokeTwoDodge)
 
     function pokeOneAttack() {
         const i = 1
@@ -384,4 +386,28 @@ function damageReductionCalc(damage, reduction) {
     }
     damage = ((1 - reduction) * damage).toFixed(1)
     return damage
+}
+function battleStats(pokemon, damage, defense, critChance, dodgeChance) {
+    let defenseInfo = ''
+    if (defense > 90) {
+        let max = 90
+        defenseInfo = `${max}% (${defense})`
+    } else {
+        defenseInfo = `${defense}%`
+    }
+    const stats = {
+        name: pokemon,
+        dmg: damage,
+        def: defenseInfo,
+        crit: critChance,
+        dodge: dodgeChance
+    }
+    document.querySelector('#battle-stats').innerHTML += 
+        `
+            <h2>${stats.name}</h2>
+            <p>Damage: ${stats.dmg}</p>
+            <p>Defense: ${stats.def}</p>
+            <p>Critical strike chance: ${stats.crit}</p>
+            <p>Attack dodge chance: ${stats.dodge}</p>
+        `
 }
