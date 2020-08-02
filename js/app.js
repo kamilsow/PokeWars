@@ -158,6 +158,15 @@ document.querySelector("#start").addEventListener('click', function () {
     const pokeTwoReductedDmg = damageReductionCalc(pokeTwoAtt, pokeOneDef)
     battleStats(pokeOne, pokeOneReductedDmg, pokeOneDef, critChance, pokeOneDodge)
     battleStats(pokeTwo, pokeTwoReductedDmg, pokeTwoDef, critChance, pokeTwoDodge)
+    document.querySelector('#battle-stats').style.display = 'block'
+    document.querySelector('.hover').addEventListener('click', function() {
+        console.log(document.querySelector('.pks-stats').classList)
+        if (document.querySelector('#battle-stats').classList[0] === 'active') {
+            document.querySelector('#battle-stats').classList.remove("active");
+        } else {
+            document.querySelector('#battle-stats').classList.add("active");
+        }   
+      });
 
     function pokeOneAttack() {
         const i = 1
@@ -211,7 +220,7 @@ document.querySelector("#start").addEventListener('click', function () {
             updateScroll()
             end()
         } else {
-            messageBox.innerHTML += `${pokeTwo} took ${damage} points of damage ${additionalInfo}<br />`
+            messageBox.innerHTML += `${pokeOne} deals ${damage} points of damage ${additionalInfo}<br />`
             updateScroll()
         }
         applyChange(pokeTwoCurHealth, pokeTwoMaxHealth, i)
@@ -265,7 +274,7 @@ document.querySelector("#start").addEventListener('click', function () {
             updateScroll()
             end()
         } else {
-            messageBox.innerHTML += `${pokeOne} took ${damage} points of damage ${additionalInfo}<br />`
+            messageBox.innerHTML += `${pokeTwo} deals ${damage} points of damage ${additionalInfo}<br />`
             updateScroll()
         }
         applyChange(pokeOneCurHealth, pokeOneMaxHealth, i)
@@ -402,12 +411,16 @@ function battleStats(pokemon, damage, defense, critChance, dodgeChance) {
         crit: critChance,
         dodge: dodgeChance
     }
-    document.querySelector('#battle-stats').innerHTML += 
+    document.querySelector('.pks-stats').innerHTML += 
         `
+        <div>
             <h2>${stats.name}</h2>
-            <p>Damage: ${stats.dmg}</p>
+            <p>Damage: ${(stats.dmg * 0.8).toFixed(1)} - ${(stats.dmg * 1.2).toFixed(1)}</p>
             <p>Defense: ${stats.def}</p>
-            <p>Critical strike chance: ${stats.crit}</p>
-            <p>Attack dodge chance: ${stats.dodge}</p>
+            <p>Critical: ${stats.crit}%</p>
+            <p>Dodge: ${stats.dodge}%</p>
+        </div>
         `
 }
+
+  

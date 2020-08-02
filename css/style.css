@@ -267,4 +267,31 @@ html, body {
     background-color: white;
     overflow-y: scroll;
 }
+#battle-stats {
+    display: none;
+    border: 2px solid #ddb823;
+    background-color: #ffda45;
+    max-height: 17px;
+    max-width: 320px;
+    transition: max-height 0.15s ease-out;
+    overflow: hidden;
+}
+.pks-stats {
+    display: flex;
+}
+#battle-stats.active {
+    max-height: 500px;
+    padding: 10px 3px;
+    margin-top: 15px;
+    transition: max-height 0.25s ease-in;
+    -webkit-box-shadow: inset 0px 0px 90px 5px rgba(0,0,0,0.75);
+    -moz-box-shadow: inset 0px 0px 90px 5px rgba(0,0,0,0.75);
+    box-shadow: inset 0px 0px 90px 5px rgba(0,0,0,0.75);
+}
+.pks-stats > div {
+    padding: 0 10px;
+}
+.pks-stats > :first-child {
+    border-right: 1px solid black;
+}
   
