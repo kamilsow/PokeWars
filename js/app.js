@@ -158,13 +158,16 @@ document.querySelector("#start").addEventListener('click', function () {
     const pokeTwoReductedDmg = damageReductionCalc(pokeTwoAtt, pokeOneDef)
     battleStats(pokeOne, pokeOneReductedDmg, pokeOneDef, critChance, pokeOneDodge)
     battleStats(pokeTwo, pokeTwoReductedDmg, pokeTwoDef, critChance, pokeTwoDodge)
-    document.querySelector('#battle-stats').style.display = 'block'
-    document.querySelector('.hover').addEventListener('click', function() {
+    document.querySelector('.click').innerHTML = `<p><object id="svg-object" data="svg/arrow-down.svg" type="image/svg+xml"></object> Battle stats <object id="svg-object" data="svg/arrow-down.svg" type="image/svg+xml"></object></p>`
+    document.querySelector('#battle-stats').style.display = 'flex'
+    document.querySelector('.click').addEventListener('click', function() {
         console.log(document.querySelector('.pks-stats').classList)
         if (document.querySelector('#battle-stats').classList[0] === 'active') {
+            document.querySelector('.click').innerHTML = `<p><object id="svg-object" data="svg/arrow-down.svg" type="image/svg+xml"></object> Battle stats <object id="svg-object" data="svg/arrow-down.svg" type="image/svg+xml"></object></p>`
             document.querySelector('#battle-stats').classList.remove("active");
         } else {
             document.querySelector('#battle-stats').classList.add("active");
+            document.querySelector('.click').innerHTML = `<p><object id="svg-object" data="svg/arrow-up.svg" type="image/svg+xml"></object> Battle stats <object id="svg-object" data="svg/arrow-up.svg" type="image/svg+xml"></object></p>`
         }   
       });
 
@@ -398,9 +401,11 @@ function damageReductionCalc(damage, reduction) {
 }
 function battleStats(pokemon, damage, defense, critChance, dodgeChance) {
     let defenseInfo = ''
+    let blockChance = 0;
     if (defense > 90) {
         let max = 90
         defenseInfo = `${max}% (${defense})`
+        blockChance = Math.floor((defense - max) / 3)
     } else {
         defenseInfo = `${defense}%`
     }
@@ -409,16 +414,18 @@ function battleStats(pokemon, damage, defense, critChance, dodgeChance) {
         dmg: damage,
         def: defenseInfo,
         crit: critChance,
-        dodge: dodgeChance
+        dodge: dodgeChance,
+        block: blockChance
     }
     document.querySelector('.pks-stats').innerHTML += 
         `
         <div>
             <h2>${stats.name}</h2>
-            <p>Damage: ${(stats.dmg * 0.8).toFixed(1)} - ${(stats.dmg * 1.2).toFixed(1)}</p>
-            <p>Defense: ${stats.def}</p>
-            <p>Critical: ${stats.crit}%</p>
-            <p>Dodge: ${stats.dodge}%</p>
+            <p><object id="svg-object" data="svg/dmg.svg" type="image/svg+xml"></object> Damage: ${(stats.dmg * 0.8).toFixed(1)} - ${(stats.dmg * 1.2).toFixed(1)}</p>
+            <p><object id="svg-object" data="svg/shield.svg" type="image/svg+xml"></object> Defense: ${stats.def}</p>
+            <p><object id="svg-object" data="svg/crit.svg" type="image/svg+xml"></object> Critical: ${stats.crit}%</p>
+            <p><object id="svg-object" data="svg/dodge.svg" type="image/svg+xml"></object> Dodge: ${stats.dodge}%</p>
+            <p><object id="svg-object" data="svg/block.svg" type="image/svg+xml"></object> Block: ${stats.block}%</p>
         </div>
         `
 }

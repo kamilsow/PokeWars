@@ -269,29 +269,69 @@ html, body {
 }
 #battle-stats {
     display: none;
+    flex-direction: column;
+    align-items: center;
     border: 2px solid #ddb823;
     background-color: #ffda45;
-    max-height: 17px;
-    max-width: 320px;
+    max-height: 39px;
+    max-width: 350px;
     transition: max-height 0.15s ease-out;
     overflow: hidden;
+    padding: 10px 3px;
+    margin-top: 15px;
+    -webkit-box-shadow: inset 0px 0px 30px 5px rgba(0,0,0,0.5);
+    -moz-box-shadow: inset 0px 0px 30px 5px rgba(0,0,0,0.5);
+    box-shadow: inset 0px 0px 30px 5px rgba(0,0,0,0.5);
+}
+#battle-stats.active {
+    max-height: 500px;
+    transition: max-height 0.25s ease-in;
+    -webkit-box-shadow: inset 0px 0px 90px 5px rgba(0,0,0,0.5);
+    -moz-box-shadow: inset 0px 0px 90px 5px rgba(0,0,0,0.5);
+    box-shadow: inset 0px 0px 90px 5px rgba(0,0,0,0.5);
 }
 .pks-stats {
     display: flex;
 }
-#battle-stats.active {
-    max-height: 500px;
-    padding: 10px 3px;
-    margin-top: 15px;
-    transition: max-height 0.25s ease-in;
-    -webkit-box-shadow: inset 0px 0px 90px 5px rgba(0,0,0,0.75);
-    -moz-box-shadow: inset 0px 0px 90px 5px rgba(0,0,0,0.75);
-    box-shadow: inset 0px 0px 90px 5px rgba(0,0,0,0.75);
-}
 .pks-stats > div {
-    padding: 0 10px;
+    padding: 0 8px;
+}
+.pks-stats > div > p {
+    padding: 3px 0;
+}
+.pks-stats > div > p > object {
+    width: 22px;
+    height: 22px;
+    margin: 0 0 -5px -4px;
+}
+.pks-stats > div > h2 {
+    text-align: center;
 }
 .pks-stats > :first-child {
     border-right: 1px solid black;
+}
+.vs {
+    min-width: 300px;
+    min-height: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.vs button {
+    width: 50px;
+}
+.click {
+    padding-bottom: 10px;
+    width: 150px;
+    font-weight: bold;
+    font-size: 1.1em;
+}
+.click:hover {
+    cursor: pointer;
+}
+.click object {
+    width: 25px;
+    height: 25px;
+    margin-bottom: -10px;
 }
   
