@@ -108,12 +108,22 @@ for (let i = 0; i < 2; i++) {
         document.querySelectorAll('.pokemon')[i].innerHTML = loader
         const query = (Math.floor(Math.random() * 807) + 1)
         picker(i, query)
+        if (document.querySelectorAll('.pick-random').length === 0) {
+            document.querySelector('#start').style.display = 'block'
+            messageBox.style.display = 'block'
+            document.querySelector('.vs-image').style.display = 'block'
+        }
     })
     document.querySelectorAll('.pick-search')[i].addEventListener('click', function () {
         document.querySelectorAll('.pokemon')[i].innerHTML = loader
         const search = searchBoxes[i].value
         const query = search.toLowerCase()
         picker(i, query)
+        if (document.querySelectorAll('.pick-search').length === 0) {
+            document.querySelector('#start').style.display = 'block'
+            messageBox.style.display = 'block'
+            document.querySelector('.vs-image').style.display = 'block'
+        }
     })
 }
 // BATTLE
@@ -121,6 +131,7 @@ for (let i = 0; i < 2; i++) {
     %DEF reduction (max 90%)
 */
 document.querySelector("#start").addEventListener('click', function () {
+    document.querySelector("#start").style.display = 'none'
     messageBox.innerHTML += `Battle starts in 3 sec<br />`
     let counter = 0
     let coinFlip = Math.random().toFixed(1)
@@ -220,6 +231,7 @@ document.querySelector("#start").addEventListener('click', function () {
             pokeTwoCurHealth = 0
             updateScroll()
             end()
+            document.querySelector('#stop').style.display = 'block'
         } else {
             messageBox.innerHTML += `${pokeOne} deals ${damage} points of damage ${additionalInfo}<br />`
             updateScroll()
@@ -273,6 +285,7 @@ document.querySelector("#start").addEventListener('click', function () {
             pokeOneCurHealth = 0
             updateScroll()
             end()
+            document.querySelector('#stop').style.display = 'block'
         } else {
             messageBox.innerHTML += `${pokeTwo} deals ${damage} points of damage ${additionalInfo}<br />`
             updateScroll()
