@@ -53,13 +53,13 @@ html, body {
 }
 .app {
     height: 100%;
-    background-color: tomato;
+    background-color: #0b0c22;
 }
 .main-container {
     height: 100%;
     position: relative;
     left: 10%;
-    background-color: gray;
+    background-color: #6a6ec0;
     width: 80%;
     display: flex;
     flex-direction: column;
@@ -212,10 +212,9 @@ html, body {
     display: flex;
     opacity: 0;
     position: absolute;
-    right: 0;
+    right: -25%;
     top: 70px;
     flex-direction: column;
-    margin: 0 75px;
 }
 .animate-info > img {
     height: 80px;
@@ -268,11 +267,29 @@ html, body {
     transition-duration: 1500ms;
 }
 .message-box {
-    display: none;
+    border-radius: 10px;
+    border: 2px solid black;
     width: 50vw;
     height: 200px;
     background-color: white;
+    overflow: visible;
     overflow-y: scroll;
+}
+.log > h1 {
+    position: relative;
+    width: 135px;
+    left: calc(50% - 68px);
+}
+::-webkit-scrollbar {
+    width: 15px;
+}
+::-webkit-scrollbar-track {
+    border-radius: 7px;
+    background-color: #b3b3b3;
+}
+::-webkit-scrollbar-thumb {
+    border-radius: 7px;
+    background-color: #0b0c22;
 }
 #battle-stats {
     display: none;
@@ -329,7 +346,7 @@ html, body {
 .vs button {
     width: 100px;
 }
-.vs > * {
+.vs > #stop, #start {
     display: none;
 }
 .vs-image {
@@ -352,4 +369,3 @@ html, body {
     height: 25px;
     margin-bottom: -10px;
 }
-  

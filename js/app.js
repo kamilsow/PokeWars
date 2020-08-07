@@ -108,22 +108,14 @@ for (let i = 0; i < 2; i++) {
         document.querySelectorAll('.pokemon')[i].innerHTML = loader
         const query = (Math.floor(Math.random() * 807) + 1)
         picker(i, query)
-        if (document.querySelectorAll('.pick-random').length === 0) {
-            document.querySelector('#start').style.display = 'block'
-            messageBox.style.display = 'block'
-            document.querySelector('.vs-image').style.display = 'block'
-        }
+        if (document.querySelectorAll('.pick-random').length === 0) document.querySelector('#start').style.display = 'block'
     })
     document.querySelectorAll('.pick-search')[i].addEventListener('click', function () {
         document.querySelectorAll('.pokemon')[i].innerHTML = loader
         const search = searchBoxes[i].value
         const query = search.toLowerCase()
         picker(i, query)
-        if (document.querySelectorAll('.pick-search').length === 0) {
-            document.querySelector('#start').style.display = 'block'
-            messageBox.style.display = 'block'
-            document.querySelector('.vs-image').style.display = 'block'
-        }
+        if (document.querySelectorAll('.pick-search').length === 0) document.querySelector('#start').style.display = 'block'
     })
 }
 // BATTLE
@@ -135,7 +127,7 @@ document.querySelector("#start").addEventListener('click', function () {
     messageBox.innerHTML += `Battle starts in 3 sec<br />`
     let counter = 0
     let coinFlip = Math.random().toFixed(1)
-    document.querySelectorAll('.animate-info')[1].style.left = '0'
+    document.querySelectorAll('.animate-info')[1].style.left = '-25%'
     const pokeOne = document.querySelectorAll('.card')[0].firstElementChild.textContent.charAt(0).toLocaleUpperCase() + document.querySelectorAll('.card')[0].firstElementChild.textContent.slice(1)
     const pokeTwo = document.querySelectorAll('.card')[1].firstElementChild.textContent.charAt(0).toLocaleUpperCase() + document.querySelectorAll('.card')[1].firstElementChild.textContent.slice(1)
     const pokeOneMaxHealth = parseInt(document.querySelectorAll('.total')[0].innerHTML.substring(0, Math.floor(document.querySelectorAll('.total')[0].innerHTML.length / 2)))
