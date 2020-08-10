@@ -93,7 +93,7 @@ const checkType = () => {
 const createHpBar = (pokemon, i) => {
     var health = pokemon.hpValue
     let out = `
-        <div class="total">${health}/${health}</div>
+        <div class="total">Health: ${health}/${health}</div>
         <div class="health-box">
             <div class="health-bar-red"></div>
             <div class="health-bar-blue"></div>
@@ -124,14 +124,14 @@ for (let i = 0; i < 2; i++) {
 */
 document.querySelector("#start").addEventListener('click', function () {
     document.querySelector("#start").style.display = 'none'
-    messageBox.innerHTML += `Battle starts in 3 sec<br />`
+    messageBox.innerHTML += `<p class="turn">Battle starts in 3 sec</p>`
     let counter = 0
     let coinFlip = Math.random().toFixed(1)
     document.querySelectorAll('.animate-info')[1].style.left = '-25%'
     const pokeOne = document.querySelectorAll('.card')[0].firstElementChild.textContent.charAt(0).toLocaleUpperCase() + document.querySelectorAll('.card')[0].firstElementChild.textContent.slice(1)
     const pokeTwo = document.querySelectorAll('.card')[1].firstElementChild.textContent.charAt(0).toLocaleUpperCase() + document.querySelectorAll('.card')[1].firstElementChild.textContent.slice(1)
-    const pokeOneMaxHealth = parseInt(document.querySelectorAll('.total')[0].innerHTML.substring(0, Math.floor(document.querySelectorAll('.total')[0].innerHTML.length / 2)))
-    const pokeTwoMaxHealth = parseInt(document.querySelectorAll('.total')[1].innerHTML.substring(0, Math.floor(document.querySelectorAll('.total')[1].innerHTML.length / 2)))
+    const pokeOneMaxHealth = parseInt(document.querySelectorAll('.stats')[0].children[3].lastElementChild.innerHTML.substring(3, Math.floor(document.querySelectorAll('.stats')[0].children[3].lastElementChild.innerHTML.length)))
+    const pokeTwoMaxHealth = parseInt(document.querySelectorAll('.stats')[1].children[3].lastElementChild.innerHTML.substring(3, Math.floor(document.querySelectorAll('.stats')[1].children[3].lastElementChild.innerHTML.length)))
     let pokeOneCurHealth = pokeOneMaxHealth
     let pokeTwoCurHealth = pokeTwoMaxHealth
     let pokeOneAtt = parseInt(document.querySelectorAll('.stats')[0].firstElementChild.lastElementChild.innerHTML.substring(7, document.querySelectorAll('.stats')[0].firstElementChild.lastElementChild.innerHTML.length))
@@ -150,11 +150,11 @@ document.querySelector("#start").addEventListener('click', function () {
     // Checking if attacked pokemon's element is weak against attacking pokemon's element
     if (pokeTwoElement == pokeOneStrong) {
         pokeOneAtt += pokeOneAtt * 0.5
-        messageBox.innerHTML += `Poke one deals additional 50% damage because he is strong against poke two <br />`
+        messageBox.innerHTML += `<p class="turn">Poke one deals additional 50% damage because he is strong against poke two</p>`
     }
     if (pokeOneElement == pokeTwoStrong) {
         pokeTwoAtt += pokeTwoAtt * 0.5
-        messageBox.innerHTML += `Poke two deals additional 50% damage because he is strong against poke one <br />`
+        messageBox.innerHTML += `<p class="turn">Poke two deals additional 50% damage because he is strong against poke one</p>`
     }
     const pokeOneReductedDmg = damageReductionCalc(pokeOneAtt, pokeTwoDef)
     const pokeTwoReductedDmg = damageReductionCalc(pokeTwoAtt, pokeOneDef)
@@ -185,7 +185,7 @@ document.querySelector("#start").addEventListener('click', function () {
             console.log('Poke 2 block chance: ' + blockChance)
             let blockRNG = Math.floor(Math.random() * 100 + 1)
             if (blockRNG <= blockChance) {
-                messageBox.innerHTML += `${pokeTwo} blocks incomming damage. <br />`
+                messageBox.innerHTML += `<p><object id="svg-object" data="svg/block.svg" type="image/svg+xml"></object> ${pokeTwo} blocks incomming damage.</p>`
                 updateScroll()
                 document.querySelectorAll('.animate-info')[i].innerHTML = `<img src="img/shield-reflect-right.png">`
                 showUpInfo(i)
@@ -194,7 +194,7 @@ document.querySelector("#start").addEventListener('click', function () {
         }
         if (dodgeRNG <= pokeTwoDodge) {
             // Checking if pokemon dodges the attack (Base dodge chance is 5%, dodgeRNG is random number between 1 and 100 and determines dodge success)
-            messageBox.innerHTML += `${pokeTwo} dodges and takes no damage. <br />`
+            messageBox.innerHTML += `<p><object id="svg-object" data="svg/dodge.svg" type="image/svg+xml"></object> ${pokeTwo} dodges and takes no damage.</p>`
             updateScroll()
             document.querySelectorAll('.animate-info')[i].innerHTML = `<img src="img/dodging.png">`
             showUpInfo(i)
@@ -207,7 +207,7 @@ document.querySelector("#start").addEventListener('click', function () {
         }
         if (critRNG <= critChance) {
             damage += damage * 0.5
-            additionalInfo += `(+50% crit)`
+            additionalInfo += `(+50% crit <object id="svg-object" data="svg/crit.svg" type="image/svg+xml"></object>)`
             document.querySelectorAll('.animate-info')[i].innerHTML = `<img src="img/bullseye-right.png">`
         } else document.querySelectorAll('.animate-info')[i].innerHTML = `<img src="img/sword-wound-right.png">`
 
@@ -219,13 +219,13 @@ document.querySelector("#start").addEventListener('click', function () {
 
         pokeTwoCurHealth = (pokeTwoCurHealth - damage).toFixed(1)
         if (pokeTwoCurHealth <= 0) {
-            messageBox.innerHTML += `${pokeTwo} took ${damage} points of damage and died. ${pokeOne} wins! ${additionalInfo}`
+            messageBox.innerHTML += `<p><object id="svg-object" data="svg/sword.svg" type="image/svg+xml"></object> ${pokeTwo} took ${damage} points of damage and died. ${pokeOne} wins! ${additionalInfo} <object id="svg-object" data="svg/cup.svg" type="image/svg+xml"></object></p>`
             pokeTwoCurHealth = 0
             updateScroll()
             end()
             document.querySelector('#stop').style.display = 'block'
         } else {
-            messageBox.innerHTML += `${pokeOne} deals ${damage} points of damage ${additionalInfo}<br />`
+            messageBox.innerHTML += `<p><object id="svg-object" data="svg/sword.svg" type="image/svg+xml"></object> ${pokeOne} deals ${damage} points of damage ${additionalInfo}</p>`
             updateScroll()
         }
         applyChange(pokeTwoCurHealth, pokeTwoMaxHealth, i)
@@ -242,7 +242,7 @@ document.querySelector("#start").addEventListener('click', function () {
             console.log('Poke 1 block chance: ' + blockChance)
             let blockRNG = Math.floor(Math.random() * 100 + 1)
             if (blockRNG <= blockChance) {
-                messageBox.innerHTML += `${pokeOne} blocks incomming damage. <br />`
+                messageBox.innerHTML += `<p><object id="svg-object" data="svg/block.svg" type="image/svg+xml"></object> ${pokeOne} blocks incomming damage.</p>`
                 updateScroll()
                 document.querySelectorAll('.animate-info')[i].innerHTML = `<img src="img/shield-reflect-left.png">`
                 showUpInfo(i)
@@ -250,7 +250,7 @@ document.querySelector("#start").addEventListener('click', function () {
             }
         }
         if (dodgeRNG <= pokeOneDodge) {
-            messageBox.innerHTML += `${pokeOne} dodges and takes no damage. <br />`
+            messageBox.innerHTML += `<p><object id="svg-object" data="svg/dodge.svg" type="image/svg+xml"></object> ${pokeOne} dodges and takes no damage.</p>`
             updateScroll()
             document.querySelectorAll('.animate-info')[i].innerHTML = `<img src="img/dodging.png">`
             showUpInfo(i)
@@ -262,7 +262,7 @@ document.querySelector("#start").addEventListener('click', function () {
         }
         if (critRNG <= critChance) {
             damage += damage * 0.5
-            additionalInfo += `(+50% crit)`
+            additionalInfo += `(+50% crit <object id="svg-object" data="svg/crit.svg" type="image/svg+xml"></object>)`
             document.querySelectorAll('.animate-info')[i].innerHTML = `<img src="img/bullseye-left.png">`
         } else document.querySelectorAll('.animate-info')[i].innerHTML = `<img src="img/sword-wound-left.png">`
 
@@ -273,20 +273,20 @@ document.querySelector("#start").addEventListener('click', function () {
 
         pokeOneCurHealth = (pokeOneCurHealth - damage).toFixed(1)
         if (pokeOneCurHealth <= 0) {
-            messageBox.innerHTML += `${pokeOne} took ${damage} points of damage and died. ${pokeTwo} wins! ${additionalInfo}`
+            messageBox.innerHTML += `<p><object id="svg-object" data="svg/sword.svg" type="image/svg+xml"></object> ${pokeOne} took ${damage} points of damage and died. ${pokeTwo} wins! ${additionalInfo} <object id="svg-object" data="svg/cup.svg" type="image/svg+xml"></object></p>`
             pokeOneCurHealth = 0
             updateScroll()
             end()
             document.querySelector('#stop').style.display = 'block'
         } else {
-            messageBox.innerHTML += `${pokeTwo} deals ${damage} points of damage ${additionalInfo}<br />`
+            messageBox.innerHTML += `<p><object id="svg-object" data="svg/sword.svg" type="image/svg+xml"></object> ${pokeTwo} deals ${damage} points of damage ${additionalInfo}</p>`
             updateScroll()
         }
         applyChange(pokeOneCurHealth, pokeOneMaxHealth, i)
     }
     async function turn() {
         counter++
-        messageBox.innerHTML += `Turn ${counter}<br />`
+        messageBox.innerHTML += `<p class="turn">Turn ${counter}</p>`
         function animate(i) {
             setTimeout(() => {
                 const elem = document.querySelectorAll('.animate-info')[i]
@@ -364,7 +364,7 @@ function applyChange(curHealth, maxHealth, i) {
     setTimeout(() => document.querySelectorAll(".health-bar-blue")[i].classList.remove('animate'), 700)
     document.querySelectorAll(".health-bar-blue")[i].style.width = (a + "%")
 
-    document.querySelectorAll('.total')[i].innerHTML = (curHealth + "/" + maxHealth)
+    document.querySelectorAll('.total')[i].innerHTML = ("Health: " + curHealth + "/" + maxHealth)
 }
 function updateScroll() {
     messageBox.scrollTop = messageBox.scrollHeight

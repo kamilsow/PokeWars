@@ -271,9 +271,21 @@ html, body {
     border: 2px solid black;
     width: 50vw;
     height: 200px;
-    background-color: white;
+    background-color: #868acc;
     overflow: visible;
     overflow-y: scroll;
+}
+.message-box > .turn {
+    align-self: center;
+    font-weight: bold;
+}
+.message-box > p {
+    padding: 3px 15px;
+}
+.message-box > p > object {
+    width: 20px;
+    height: 20px;
+    margin-bottom: -5px;
 }
 .log > h1 {
     position: relative;
@@ -295,8 +307,8 @@ html, body {
     display: none;
     flex-direction: column;
     align-items: center;
-    border: 2px solid hsl(48, 85%, 29%);
-    background-color: #ffda45;
+    border: 2px solid #34387d;
+    background-color: #8b8ec9;
     max-height: 39px;
     max-width: 350px;
     transition: max-height 0.15s ease-out;
