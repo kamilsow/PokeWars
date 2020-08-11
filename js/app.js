@@ -38,7 +38,9 @@ const createPoke = (i, pokemon) => {
         <div class="card">
             <h1>${pokemon.name}</h1>
             <div class="hp-bar"></div>
-            <img src=${pokemon.imgFront}>
+            <div class="sprite">
+                <img src=${pokemon.imgFront}>
+            </div>
             <div class="type">${pokemon.typesOut}</div>
             <div class="poke-info">
                 <div class="stats">
@@ -69,7 +71,7 @@ const checkType = () => {
         const typeArr = ['bug', 'dark', 'normal', 'fire', 'dragon', 'flying', 'electric', 'fairy', 'fighting', 'ghost', 'poison', 'grass', 'ground', 'ice', 'steel', 'psychic', 'rock', 'water']
         const strongAgainst = ['psychic', 'ghost', 'NONE', 'steel', 'bug', 'fighting', 'fire', 'dark', 'rock', 'fairy', 'grass', 'water', 'poison', 'dragon', 'ice', 'electric', 'flying', 'ground']
         const weakAgainst = ['dragon', 'fairy', 'NONE', 'electric', 'ice', 'rock', 'psychic', 'ghost', 'flying', 'dark', 'ground', 'poison', 'water', 'steel', 'fire', 'bug', 'fighting', 'grass']
-        //const icons = ['<object id="svg-object" data="svg/cigale.svg" type="image/svg+xml"></object>']
+        const colour = ['A8b820', '705848', 'a8a878', 'f08030', '7038f8', 'a890f0', 'f8d030', 'ee99ac', 'c03028', '705898', 'a040a0', '78c850', 'e0c068', '98d8d8', 'b8b8d0', 'f85888', 'b8a038', '6890f0']
         for (let i = 0; i < typeArr.length; i++) {
             if (cardType == typeArr[i]) {
                 
@@ -84,6 +86,8 @@ const checkType = () => {
                 type.parentElement.firstElementChild.classList.add(typeArr[i])
                 type.classList.add(typeArr[i] + '2')
                 type.parentElement.classList.add(typeArr[i] + '2')
+                type.parentElement.children[2].style.boxShadow = `inset 0px 0px 40px 8px #${colour[i]}`
+                type.parentElement.lastElementChild.style.boxShadow = `inset 0px 0px 40px 8px #${colour[i]}`
                 type.innerHTML = typeTab
                 break
             }
