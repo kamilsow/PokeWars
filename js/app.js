@@ -228,6 +228,8 @@ document.querySelector("#start").addEventListener('click', function () {
             updateScroll()
             end()
             document.querySelector('#stop').style.display = 'block'
+            document.querySelector('.winner').innerHTML = `<object id="svg-object" data="svg/cup.svg" type="image/svg+xml"></object> ${pokeOne} wins! <object id="svg-object" data="svg/cup.svg" type="image/svg+xml"></object>`
+            document.querySelector('.winner').style.opacity = '100'
         } else {
             messageBox.innerHTML += `<p><object id="svg-object" data="svg/sword.svg" type="image/svg+xml"></object> ${pokeOne} deals ${damage} points of damage ${additionalInfo}</p>`
             updateScroll()
@@ -282,6 +284,8 @@ document.querySelector("#start").addEventListener('click', function () {
             updateScroll()
             end()
             document.querySelector('#stop').style.display = 'block'
+            document.querySelector('.winner').innerHTML = `<object id="svg-object" data="svg/cup.svg" type="image/svg+xml"></object> ${pokeTwo} wins! <object id="svg-object" data="svg/cup.svg" type="image/svg+xml"></object>`
+            document.querySelector('.winner').style.opacity = '100'
         } else {
             messageBox.innerHTML += `<p><object id="svg-object" data="svg/sword.svg" type="image/svg+xml"></object> ${pokeTwo} deals ${damage} points of damage ${additionalInfo}</p>`
             updateScroll()
