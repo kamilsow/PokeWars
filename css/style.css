@@ -163,10 +163,41 @@ html, body {
     width: 40px;
     margin: -5px 10px -5px 10px;
 }
+.misc {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 50%;
+    align-content: center;
+    justify-content: center;
+}
 .misc > .elements > p > #svg-object {
-    height: 20px;
-    width: 20px;
-    margin-bottom: -5px;
+    height: 30px;
+    width: 30px;
+    margin-bottom: -10px;
+    padding-right: 5px;
+}
+.misc > .elements {
+    padding: 10px 0;
+}
+.misc > .elements > p:last-of-type {
+    padding: 3px 10px;
+    border-radius: 10px;
+}
+.id {
+    border: 2px solid black;
+    font-weight: bold;
+    padding: 5px 8px 5px 20px;
+    align-self: center;
+    background-color: aqua;
+    clip-path: polygon(40% 0, 100% 0, 100% 100%, 0 100%);
+}
+.id::before {
+    position: absolute;
+    content: '';
+    width: 60px;
+    height: 33px;
+    background-color: black;
 }
 .bug {background-color: #A8b820;}
 .bug2 {background-color: #dbeb53; border-color: #758500;}
@@ -207,11 +238,6 @@ html, body {
 .typeValues p {
     padding: 3px 15px 3px 15px;
     border-radius: 15px;
-}
-.misc {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
 }
 .elements {
     display: flex;
@@ -286,6 +312,7 @@ html, body {
     background-color: #868acc;
     overflow: visible;
     overflow-y: scroll;
+    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.75);
 }
 .message-box > .turn {
     align-self: center;

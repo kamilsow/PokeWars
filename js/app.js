@@ -50,9 +50,9 @@ const createPoke = (i, pokemon) => {
                     <div><img src="img/heart-plus.png"><p>${pokemon.hp} ${pokemon.hpValue}</p></div>
                 </div>
                 <div class="misc">
-                    <div class="id">Pokemon id: ${pokemon.id}</div>
                     <div class="elements"></div>
                     <div class="elements"></div>
+                    <div class="id">${pokemon.id}</div>
                 </div>
                 
             </div>
@@ -81,8 +81,8 @@ const checkType = () => {
                         ${typeArr[i]}
                         <object id="svg-object" data="svg/${typeArr[i]}.svg" type="image/svg+xml">
                     </p>`
-                type.parentElement.lastElementChild.children[1].children[1].innerHTML = `<p><object id="svg-object" data="svg/strong.svg" type="image/svg+xml"></object>Strong against</p><p class="${strongAgainst[i]}">${strongAgainst[i]}</p>`
-                type.parentElement.lastElementChild.children[1].children[2].innerHTML = `<p><object id="svg-object" data="svg/weak.svg" type="image/svg+xml"></object>Weak against</p><p class="${weakAgainst[i]}">${weakAgainst[i]}</p>`
+                type.parentElement.lastElementChild.children[1].children[0].innerHTML = `<p><object id="svg-object" data="svg/strong.svg" type="image/svg+xml"></object>Strong against</p><p class="${strongAgainst[i]}">${strongAgainst[i]}</p>`
+                type.parentElement.lastElementChild.children[1].children[1].innerHTML = `<p><object id="svg-object" data="svg/weak.svg" type="image/svg+xml"></object>Weak against</p><p class="${weakAgainst[i]}">${weakAgainst[i]}</p>`
                 type.parentElement.firstElementChild.classList.add(typeArr[i])
                 type.classList.add(typeArr[i] + '2')
                 type.parentElement.classList.add(typeArr[i] + '2')
