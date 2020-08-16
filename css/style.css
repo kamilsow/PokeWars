@@ -185,19 +185,14 @@ html, body {
     border-radius: 10px;
 }
 .id {
-    border: 2px solid black;
+    position: absolute;
+    bottom: 2px;
+    right: 0;
     font-weight: bold;
     padding: 5px 8px 5px 20px;
     align-self: center;
-    background-color: aqua;
     clip-path: polygon(40% 0, 100% 0, 100% 100%, 0 100%);
-}
-.id::before {
-    position: absolute;
-    content: '';
-    width: 60px;
-    height: 33px;
-    background-color: black;
+    color: white;
 }
 .bug {background-color: #A8b820;}
 .bug2 {background-color: #dbeb53; border-color: #758500;}
@@ -343,7 +338,7 @@ html, body {
 }
 #battle-stats {
     position: absolute;
-    overflow: hidden;
+    /*overflow: hidden;*/
     top: 70%;
     display: none;
     flex-direction: column;
@@ -363,6 +358,29 @@ html, body {
     -webkit-box-shadow: inset 0px 0px 90px 5px rgba(0,0,0,0.5);
     -moz-box-shadow: inset 0px 0px 90px 5px rgba(0,0,0,0.5);
     box-shadow: inset 0px 0px 90px 5px rgba(0,0,0,0.5);
+}
+.tool-tip {
+    position: absolute;
+    right: 4px;
+    top: 2px;
+    background-color: black;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 50%;
+    opacity: 0;
+}#battle-stats.active .tool-tip { opacity: 100; transition-duration: 2000ms;}
+.tool-tip::after {
+    z-index: 100;
+    content: attr(data);
+    display: block;
+    position: absolute;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.3);
+    white-space: nowrap;
+    opacity: 0;
+}
+.tool-tip:hover::after {
+    opacity: 100;
 }
 .pks-stats {
     display: flex;

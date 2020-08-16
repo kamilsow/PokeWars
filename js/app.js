@@ -76,13 +76,14 @@ const checkType = () => {
             if (cardType == typeArr[i]) {
                 
                 let typeTab = `
-                    <p class='${typeArr[i]}'>
+                    <p class="${typeArr[i]}">
                         <object id="svg-object" data="svg/${typeArr[i]}.svg" type="image/svg+xml"></object>
-                        ${typeArr[i]}
-                        <object id="svg-object" data="svg/${typeArr[i]}.svg" type="image/svg+xml">
+                        <span>${typeArr[i]}</span>
+                        <object id="svg-object" data="svg/${typeArr[i]}.svg" type="image/svg+xml"></object>
                     </p>`
                 type.parentElement.lastElementChild.children[1].children[0].innerHTML = `<p><object id="svg-object" data="svg/strong.svg" type="image/svg+xml"></object>Strong against</p><p class="${strongAgainst[i]}">${strongAgainst[i]}</p>`
                 type.parentElement.lastElementChild.children[1].children[1].innerHTML = `<p><object id="svg-object" data="svg/weak.svg" type="image/svg+xml"></object>Weak against</p><p class="${weakAgainst[i]}">${weakAgainst[i]}</p>`
+                type.parentElement.lastElementChild.lastElementChild.lastElementChild.classList.add(typeArr[i])
                 type.parentElement.firstElementChild.classList.add(typeArr[i])
                 type.classList.add(typeArr[i] + '2')
                 type.parentElement.classList.add(typeArr[i] + '2')
@@ -144,30 +145,40 @@ document.querySelector("#start").addEventListener('click', function () {
     const pokeTwoDef = parseInt(document.querySelectorAll('.stats')[1].children[1].lastElementChild.innerHTML.substring(8, document.querySelectorAll('.stats')[1].children[1].lastElementChild.length))
     const pokeOneSpeed = parseInt(document.querySelectorAll('.stats')[0].children[2].lastElementChild.innerHTML.substring(6, document.querySelectorAll('.stats')[0].children[2].lastElementChild.innerHTML.length))
     const pokeTwoSpeed = parseInt(document.querySelectorAll('.stats')[1].children[2].lastElementChild.innerHTML.substring(6, document.querySelectorAll('.stats')[1].children[2].lastElementChild.innerHTML.length))
-    const pokeOneElement = document.querySelectorAll('.type')[0].firstElementChild.textContent
-    const pokeTwoElement = document.querySelectorAll('.type')[1].firstElementChild.textContent
-    const pokeOneStrong = document.querySelectorAll('.elements')[0].firstElementChild.textContent
-    const pokeTwoStrong = document.querySelectorAll('.elements')[2].firstElementChild.textContent
+    const pokeOneElement = document.querySelectorAll('.type')[0].firstElementChild.children[1].textContent
+    const pokeTwoElement = document.querySelectorAll('.type')[1].firstElementChild.children[1].textContent
+    console.log('poke one ele: ' + pokeOneElement)
+    console.log('poke two ele: ' + pokeTwoElement)
+    const pokeOneStrong = document.querySelectorAll('.elements')[0].children[1].textContent
+    const pokeTwoStrong = document.querySelectorAll('.elements')[2].children[1].textContent
+    console.log('poke one strong: ' + pokeOneStrong)
+    console.log('poke two strong: ' + pokeTwoStrong)
+    console.log(pokeOneStrong === pokeTwoElement)
     const pokeOneDodge = dodgeCalc(pokeOneSpeed)
     const pokeTwoDodge = dodgeCalc(pokeTwoSpeed)
     let critChance = 5
     // Checking if attacked pokemon's element is weak against attacking pokemon's element
     if (pokeTwoElement == pokeOneStrong) {
         pokeOneAtt += pokeOneAtt * 0.5
-        messageBox.innerHTML += `<p class="turn">Poke one deals additional 50% damage because he is strong against poke two</p>`
+        messageBox.innerHTML += `<p class="turn">${pokeOne} deals additional 50% damage because he is strong against ${pokeTwo}</p>`
     }
     if (pokeOneElement == pokeTwoStrong) {
         pokeTwoAtt += pokeTwoAtt * 0.5
-        messageBox.innerHTML += `<p class="turn">Poke two deals additional 50% damage because he is strong against poke one</p>`
+        messageBox.innerHTML += `<p class="turn">${pokeTwo} deals additional 50% damage because he is strong against ${pokeOne}</p>`
     }
     const pokeOneReductedDmg = damageReductionCalc(pokeOneAtt, pokeTwoDef)
     const pokeTwoReductedDmg = damageReductionCalc(pokeTwoAtt, pokeOneDef)
+    // creating battle-stats block
     battleStats(pokeOne, pokeOneReductedDmg, pokeOneDef, critChance, pokeOneDodge)
     battleStats(pokeTwo, pokeTwoReductedDmg, pokeTwoDef, critChance, pokeTwoDodge)
     document.querySelector('.click').innerHTML = `<p><object id="svg-object" data="svg/arrow-down.svg" type="image/svg+xml"></object> Battle stats <object id="svg-object" data="svg/arrow-down.svg" type="image/svg+xml"></object></p>`
     document.querySelector('#battle-stats').style.display = 'flex'
     document.querySelector('.click').addEventListener('click', function() {
-        console.log(document.querySelector('.pks-stats').classList)
+        document.querySelector('.tool-tip').setAttribute('data', 
+            `Damage is based on the pokemon's attack and his opponent defense
+            (attack * (100% - defense) = damage)
+            Defense: percentage value of pokemon's defense
+            `)
         if (document.querySelector('#battle-stats').classList[0] === 'active') {
             document.querySelector('.click').innerHTML = `<p><object id="svg-object" data="svg/arrow-down.svg" type="image/svg+xml"></object> Battle stats <object id="svg-object" data="svg/arrow-down.svg" type="image/svg+xml"></object></p>`
             document.querySelector('#battle-stats').classList.remove("active");
