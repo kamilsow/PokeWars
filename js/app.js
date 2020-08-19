@@ -111,6 +111,8 @@ const createHpBar = (pokemon, i) => {
 for (let i = 0; i < 2; i++) {
     document.querySelectorAll('.pick-random')[i].addEventListener('click', function () {
         document.querySelectorAll('.pokemon')[i].innerHTML = loader
+        document.querySelectorAll('.pokemon')[i].style.border = 'none'
+        document.querySelectorAll('.pokemon')[i].style.boxShadow = 'none'
         const query = (Math.floor(Math.random() * 807) + 1)
         picker(i, query)
         if (document.querySelectorAll('.pick-random').length === 0) document.querySelector('#start').style.display = 'block'
@@ -132,7 +134,7 @@ document.querySelector("#start").addEventListener('click', function () {
     messageBox.innerHTML += `<p class="turn">Battle starts in 3 sec</p>`
     let counter = 0
     let coinFlip = Math.random().toFixed(1)
-    document.querySelectorAll('.animate-info')[1].style.left = '-25%'
+    document.querySelectorAll('.animate-info')[1].style.left = '-30%'
     const pokeOne = document.querySelectorAll('.card')[0].firstElementChild.textContent.charAt(0).toLocaleUpperCase() + document.querySelectorAll('.card')[0].firstElementChild.textContent.slice(1)
     const pokeTwo = document.querySelectorAll('.card')[1].firstElementChild.textContent.charAt(0).toLocaleUpperCase() + document.querySelectorAll('.card')[1].firstElementChild.textContent.slice(1)
     const pokeOneMaxHealth = parseInt(document.querySelectorAll('.stats')[0].children[3].lastElementChild.innerHTML.substring(3, Math.floor(document.querySelectorAll('.stats')[0].children[3].lastElementChild.innerHTML.length)))
