@@ -12,7 +12,7 @@ const picker = async (i, query) => {
             checkType()
             createHpBar(pokemon, i)
         })
-        .catch(err => console.log(err))
+        .catch(err => alert(err))
 }
 const createPokeObject = (jsonObject) => {
     jsonObject.types.sort((a, b) => (a.slot > b.slot) ? 1 : -1)
@@ -119,6 +119,8 @@ for (let i = 0; i < 2; i++) {
     })
     document.querySelectorAll('.pick-search')[i].addEventListener('click', function () {
         document.querySelectorAll('.pokemon')[i].innerHTML = loader
+        document.querySelectorAll('.pokemon')[i].style.border = 'none'
+        document.querySelectorAll('.pokemon')[i].style.boxShadow = 'none'
         const search = searchBoxes[i].value
         const query = search.toLowerCase()
         picker(i, query)
